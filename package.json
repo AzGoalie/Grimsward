@@ -1,7 +1,7 @@
 {
     "name": "Grimsward",
     "version": "1.0.0",
-    "license": "MIT",
+    "license": "Apache-2.0",
     "scripts": {
         "dev": "shadow-cljs watch app",
         "release": "shadow-cljs release app",
@@ -12,11 +12,11 @@
     "dependencies": {
         "@material-ui/core": "^4.11.2",
         "@material-ui/icons": "^4.11.2",
-        "highlight.js": "9.18.1",
         "react": "^16.14.0",
         "react-dom": "^16.14.0"
     },
     "devDependencies": {
+        "highlight.js": "9.18.1",
         "react-highlight.js": "^1.0.7",
         "shadow-cljs": "^2.11.8"
     }

@@ -2,3 +2,4 @@
 /target
 /public/js
 .shadow-cljs
+.DS_Store
