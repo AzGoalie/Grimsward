@@ -18,12 +18,12 @@
   [:<>
    [nav-item {:id :sign-up
               :name "Sign Up"
-              :href "#signup"
+              :href "#sign-up"
               :active-nav active-nav
               :dispatch #(rf/dispatch [:set-active-nav :sign-up])}]
    [nav-item {:id :log-in
               :name "Log In"
-              :href "#login"
+              :href "#log-in"
               :active-nav active-nav
               :dispatch #(rf/dispatch [:set-active-nav :log-in])}]])
 
@@ -36,7 +36,7 @@
               :active-nav active-nav
               :dispatch #(rf/dispatch [:set-active-nav :campaigns])}]
    [nav-item {:id :profile
-              :name "[Account Name Here]"
+              :name "Profile"
               :href "#profile"
               :active-nav active-nav
               :dispatch #(rf/dispatch [:set-active-nav :profile])}]])
@@ -50,4 +50,6 @@
        [:> icons/Menu]]
       [:> mui/Typography {:variant "h6" :style {:flexGrow 1}}
        "Grimsward"]
-      [nav-public {:active-nav active-nav}]]]))
+      (if-let [user true]
+        [nav-authenticated {:active-nav active-nav}]
+        [nav-public {:active-nav active-nav}])]]))
