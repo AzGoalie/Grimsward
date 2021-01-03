@@ -50,6 +50,6 @@
        [:> icons/Menu]]
       [:> mui/Typography {:variant "h6" :style {:flexGrow 1}}
        "Grimsward"]
-      (if-let [user true]
+      (if-let [user false]
         [nav-authenticated {:active-nav active-nav}]
         [nav-public {:active-nav active-nav}])]]))

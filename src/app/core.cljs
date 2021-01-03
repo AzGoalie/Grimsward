@@ -37,10 +37,12 @@
      [:> mui/Container
       [pages active-nav]]]))
 
-(defn start
+(defn ^:dev/after-load start
   []
-  (rf/dispatch-sync [:initialize-db])
   (rdom/render [app]
                (.getElementById js/document "app")))
 
-(start)
+(defn ^:export init
+  []
+  (rf/dispatch-sync [:initialize-db])
+  (start))
