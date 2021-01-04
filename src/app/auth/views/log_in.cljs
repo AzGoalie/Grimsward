@@ -2,6 +2,7 @@
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
             [app.components.page-nav :refer [page-nav]]
+            [app.components.form-group :refer [form-group]]
             ["@material-ui/core" :as mui]))
 
 (defn log-in
@@ -13,25 +14,14 @@
        [page-nav {:center "Log In"}]
        [:form
         [:> mui/Container { :maxWidth "xs" }
-         [:> mui/TextField {:label "Email Address"
-                            :id :email
-                            :type "email"
-                            :variant "outlined"
-                            :fullWidth true
-                            :margin "normal"
-                            :autoFocus true
-                            :required true
-                            :autoComplete "email"
-                            :value (:email @values)
-                            :on-change #(swap! values assoc :email (.. % -target -value))}]
-         [:> mui/TextField {:label "Password"
-                            :type "password"
-                            :variant "outlined"
-                            :margin "normal"
-                            :fullWidth true
-                            :required true
-                            :autoComplete "current-password"
-                            :id :password}]
+         [form-group {:label "Email Address"
+                      :id :email
+                      :type "email"
+                      :values values}]
+         [form-group {:label "Password"
+                      :type "password"
+                      :id :password
+                      :values values}]
          [:> mui/Button {:variant "contained"
                          :color "primary"
                          :type "submit"
