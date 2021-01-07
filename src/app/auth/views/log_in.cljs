@@ -27,7 +27,8 @@
                          :type "submit"
                          :fullWidth true
                          :style {:marginTop 16
-                                 :marginBottom 16}}
+                                 :marginBottom 16}
+                         :on-click #(rf/dispatch [:log-in @values])}
           "Log In"]
          [:> mui/Link {:href "#sign-up"
                        :variant "body2"

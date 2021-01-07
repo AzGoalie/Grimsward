@@ -9,6 +9,7 @@
             [app.auth.views.profile :refer [profile]]
             [app.auth.views.log-in :refer [log-in]]
             [app.auth.views.sign-up :refer [sign-up]]
+            [app.auth.events]
             ;; -- campaign --
             [app.campaign.views.campaigns :refer [campaigns]]
             ;; -- nav --
