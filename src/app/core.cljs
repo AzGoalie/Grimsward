@@ -5,6 +5,8 @@
             [app.db]
             [app.theme :refer [grimsward-theme]]
             [app.components.page-nav :refer [page-nav]]
+            ;; -- firebase --
+            [app.firebase.init :refer [firebase-init]]
             ;; -- auth --
             [app.auth.views.profile :refer [profile]]
             [app.auth.views.log-in :refer [log-in]]
@@ -45,4 +47,5 @@
 (defn ^:export init
   []
   (rf/dispatch-sync [:initialize-db])
-  (start))
+  (start)
+  (firebase-init))

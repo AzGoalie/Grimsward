@@ -3,7 +3,15 @@
             [re-frame.core :as rf]
             [app.components.page-nav :refer [page-nav]]
             [app.components.form-group :refer [form-group]]
-            ["@material-ui/core" :as mui]))
+            ["@material-ui/core" :as mui]
+            ["firebase/app" :default firebase]))
+
+(defn on-login [{:keys [email password]}]
+  (try
+    (.then (.signInWithEmailAndPassword (.auth firebase) email password)
+           #(js/console.log %))
+    (catch js/Error e
+      (js/console.log e))))
 
 (defn log-in
   []
@@ -26,6 +34,7 @@
                          :color "primary"
                          :type "submit"
                          :fullWidth true
+                         :on-click #(on-login @values)
                          :style {:marginTop 16
                                  :marginBottom 16}}
           "Log In"]
