@@ -8,8 +8,9 @@
 
 (defn on-login [{:keys [email password]}]
   (try
-    (.then (.signInWithEmailAndPassword (.auth firebase) email password)
-           #(js/console.log %))
+    (-> (.auth firebase)
+        (.signInWithEmailAndPassword email password)
+        (.then #(js/console.log %)))
     (catch js/Error e
       (js/console.log e))))
 
