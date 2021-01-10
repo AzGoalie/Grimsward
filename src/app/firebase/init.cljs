@@ -1,6 +1,9 @@
 (ns app.firebase.init
-  (:require ["firebase/app" :default firebase]
-            ["firebase/auth"]))
+  (:require [re-frame.core :as rf]
+            ["firebase/app" :default firebase]
+            ["firebase/auth"]
+            [app.firebase.auth :refer [on-auth-state-changed]]))
+
 
 (defn firebase-init
   []
@@ -9,4 +12,5 @@
                                 :projectId "grimsward-dea5a"
                                 :storageBucket "grimsward-dea5a.appspot.com"
                                 :messagingSenderId "59394048436"
-                                :appId "1:59394048436:web:5b2d842b72630df889b2e1"}))
+                                :appId "1:59394048436:web:5b2d842b72630df889b2e1"})
+  (on-auth-state-changed))
