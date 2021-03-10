@@ -1,25 +1,24 @@
 (ns app.core
-  (:require [reagent.core :as r]
-            [reagent.dom :as rdom]
+  (:require [reagent.dom :as rdom]
             [re-frame.core :as rf]
             [app.db]
             [app.theme :refer [grimsward-theme]]
             [app.components.page-nav :refer [page-nav]]
-            ;; -- firebase --
+    ;; -- firebase --
             [app.firebase.init :refer [firebase-init]]
-            ;; -- auth --
+    ;; -- auth --
             [app.auth.views.profile :refer [profile]]
             [app.auth.views.log-in :refer [log-in]]
             [app.auth.views.sign-up :refer [sign-up]]
             [app.auth.events]
             [app.auth.subs]
-            ;; -- campaign --
+    ;; -- campaign --
             [app.campaign.views.campaigns :refer [campaigns]]
-            ;; -- nav --
+    ;; -- nav --
             [app.nav.views :refer [nav]]
             [app.nav.events]
             [app.nav.subs]
-            ;; -- npm deps --
+    ;; -- npm deps --
             ["@material-ui/core" :as mui]
             ["@material-ui/core/styles" :refer [ThemeProvider]]))
 

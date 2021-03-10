@@ -18,7 +18,7 @@
           [:> mui/Container {:maxWidth "xs"}
            (when error?
              [:> mui/Typography {:variant "caption"
-                                 :color "error"}
+                                 :color   "error"}
               "Invalid email/password"])
            [form-group {:label  "Email Address"
                         :id     :email

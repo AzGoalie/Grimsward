@@ -25,12 +25,12 @@
   []
   (-> (.auth firebase)
       (.onAuthStateChanged
-       (fn [user]
-         (if user
-           (rf/dispatch [:log-in {:user (js->clj
-                                         (-> user js/JSON.stringify js/JSON.parse)
-                                         :keywordize-keys true)}])
-           (rf/dispatch [:log-out])))
-       (fn [error]
-         (if error
-           (rf/dispatch [:log-in-failure {:error-message (parse-error-code (.-code error))}]))))))
+        (fn [user]
+          (if user
+            (rf/dispatch [:log-in {:user (js->clj
+                                           (-> user js/JSON.stringify js/JSON.parse)
+                                           :keywordize-keys true)}])
+            (rf/dispatch [:log-out])))
+        (fn [error]
+          (if error
+            (rf/dispatch [:log-in-failure {:error-message (parse-error-code (.-code error))}]))))))

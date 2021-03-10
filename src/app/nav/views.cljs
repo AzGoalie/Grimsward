@@ -6,40 +6,40 @@
 (defn nav-item
   [{:keys [id href dispatch name active-nav]}]
   (:> mui/Typography
-      [:> mui/Link {:href href
-                    :on-click dispatch
-                    :color "inherit"
-                    :style {:padding 10}
-                    :underline (if (= id active-nav) "always" "hover")}
-       name]))
+    [:> mui/Link {:href      href
+                  :on-click  dispatch
+                  :color     "inherit"
+                  :style     {:padding 10}
+                  :underline (if (= id active-nav) "always" "hover")}
+     name]))
 
 (defn nav-public
   [{:keys [active-nav]}]
   [:<>
-   [nav-item {:id :sign-up
-              :name "Sign Up"
-              :href "#sign-up"
+   [nav-item {:id         :sign-up
+              :name       "Sign Up"
+              :href       "#sign-up"
               :active-nav active-nav
-              :dispatch #(rf/dispatch [:set-active-nav :sign-up])}]
-   [nav-item {:id :log-in
-              :name "Log In"
-              :href "#log-in"
+              :dispatch   #(rf/dispatch [:set-active-nav :sign-up])}]
+   [nav-item {:id         :log-in
+              :name       "Log In"
+              :href       "#log-in"
               :active-nav active-nav
-              :dispatch #(rf/dispatch [:set-active-nav :log-in])}]])
+              :dispatch   #(rf/dispatch [:set-active-nav :log-in])}]])
 
 (defn nav-authenticated
   [{:keys [active-nav]}]
   [:<>
-   [nav-item {:id :campaigns
-              :name "Campaigns"
-              :href "#campaigns"
+   [nav-item {:id         :campaigns
+              :name       "Campaigns"
+              :href       "#campaigns"
               :active-nav active-nav
-              :dispatch #(rf/dispatch [:set-active-nav :campaigns])}]
-   [nav-item {:id :profile
-              :name "Profile"
-              :href "#profile"
+              :dispatch   #(rf/dispatch [:set-active-nav :campaigns])}]
+   [nav-item {:id         :profile
+              :name       "Profile"
+              :href       "#profile"
               :active-nav active-nav
-              :dispatch #(rf/dispatch [:set-active-nav :profile])}]])
+              :dispatch   #(rf/dispatch [:set-active-nav :profile])}]])
 
 (defn nav
   []

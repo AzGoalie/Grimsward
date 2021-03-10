@@ -3,6 +3,6 @@
 
 (def grimsward-theme
   (createMuiTheme
-   (clj->js {:palette {:type "dark"}})))
+    (clj->js {:palette {:type "dark"}})))
 
 
