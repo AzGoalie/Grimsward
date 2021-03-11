@@ -50,7 +50,6 @@
            [:> mui/Button {:variant   "contained"
                            :color     "primary"
                            :size      "large"
-                           :type      "submit"
                            :fullWidth true
                            :on-click  #(on-create-account @values)
                            :style     {:marginTop    16
