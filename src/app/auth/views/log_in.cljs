@@ -32,6 +32,7 @@
                         :values values}]
            [:> mui/Button {:variant   "contained"
                            :color     "primary"
+                           :size      "large"
                            :type      "submit"
                            :fullWidth true
                            :on-click  #(sign-in-with-email-and-password @values)
