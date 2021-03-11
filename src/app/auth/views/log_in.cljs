@@ -11,24 +11,24 @@
   (let [initial-values {:email "" :password ""}
         values (r/atom initial-values)]
     (fn []
-      (let [error? (boolean @(rf/subscribe [:log-in-failure]))]
+      (let [error @(rf/subscribe [:log-in-failure])]
         [:<>
          [page-nav {:center "Log In"}]
          [:form
           [:> mui/Container {:maxWidth "xs"}
-           (when error?
+           (when error
              [:> mui/Typography {:variant "caption"
                                  :color   "error"}
-              "Invalid email/password"])
+              (:message error)])
            [form-group {:label  "Email Address"
                         :id     :email
                         :type   "email"
-                        :error  error?
+                        :error  (boolean error)
                         :values values}]
            [form-group {:label  "Password"
                         :type   "password"
                         :id     :password
-                        :error  error?
+                        :error  (boolean error)
                         :values values}]
            [:> mui/Button {:variant   "contained"
                            :color     "primary"
