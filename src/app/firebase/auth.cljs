@@ -3,18 +3,18 @@
             ["firebase/app" :default firebase]))
 
 (def error-codes
-  {"auth/wrong-password" {:code :wrong-password
-                          :message "Invalid email/password"}
-   "auth/invalid-email" {:code :invalid-email
-                         :message "Invalid email"}
-   "auth/user-not-found" {:code :user-not-found
-                          :message "Account not found"}
-   "auth/user-disabled" {:code :user-disabled
-                         :message "Account disabled"}
-   "auth/email-already-in-use" {:code :email-in-use
+  {"auth/wrong-password"       {:code    :wrong-password
+                                :message "Invalid email/password"}
+   "auth/invalid-email"        {:code    :invalid-email
+                                :message "Invalid email"}
+   "auth/user-not-found"       {:code    :user-not-found
+                                :message "Account not found"}
+   "auth/user-disabled"        {:code    :user-disabled
+                                :message "Account disabled"}
+   "auth/email-already-in-use" {:code    :email-in-use
                                 :message "An account already exists with this email address"}
-   "auth/weak-password" {:code :weak-password
-                         :message "Password is too weak"}})
+   "auth/weak-password"        {:code    :weak-password
+                                :message "Password is too weak"}})
 
 (defn parse-user
   [user]

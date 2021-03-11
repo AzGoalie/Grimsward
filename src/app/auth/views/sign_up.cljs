@@ -33,8 +33,8 @@
            [form-group {:label  "Email Address"
                         :id     :email
                         :type   "email"
-                        :error (or (= :invalid-email (:code error))
-                                   (= :email-in-use (:code error)))
+                        :error  (or (= :invalid-email (:code error))
+                                    (= :email-in-use (:code error)))
                         :values values}]
            [form-group {:label  "Password"
                         :type   "password"
@@ -45,7 +45,7 @@
            [form-group {:label  "Confirm Password"
                         :type   "password"
                         :id     :confirm-password
-                        :error (not (validate-passwords @values))
+                        :error  (not (validate-passwords @values))
                         :values values}]
            [:> mui/Button {:variant   "contained"
                            :color     "primary"
