@@ -1,5 +1,6 @@
 (ns app.nav.views
-  (:require [re-frame.core :as rf]
+  (:require [reagent.core :as r]
+            [re-frame.core :as rf]
             ["@material-ui/core" :as mui]
             ["@material-ui/icons" :as icons]))
 
@@ -27,6 +28,29 @@
               :active-nav active-nav
               :dispatch   #(rf/dispatch [:set-active-nav :log-in])}]])
 
+(defn profile-menu
+  [anchor-el handle-close]
+  [:> mui/Popper {:open      (boolean anchor-el)
+                  :anchor-el anchor-el}
+   [:> mui/Paper
+    [:> mui/ClickAwayListener {:on-click-away handle-close}
+     [:> mui/MenuList
+      [:> mui/MenuItem {:on-click handle-close}
+       "Profile"]
+      [:> mui/MenuItem {:on-click #(rf/dispatch [:log-out])}
+       "Sign Out"]]]]])
+
+(defn profile-button
+  []
+  (let [anchor-el (r/atom nil)
+        handle-click #(reset! anchor-el (.-currentTarget %))
+        handle-close #(reset! anchor-el nil)]
+    (fn []
+      [:<>
+       [:> mui/IconButton {:on-click handle-click}
+        [:> icons/AccountCircle]]
+       [profile-menu @anchor-el handle-close]])))
+
 (defn nav-authenticated
   [{:keys [active-nav]}]
   [:<>
@@ -35,11 +59,7 @@
               :href       "#campaigns"
               :active-nav active-nav
               :dispatch   #(rf/dispatch [:set-active-nav :campaigns])}]
-   [nav-item {:id         :profile
-              :name       "Profile"
-              :href       "#profile"
-              :active-nav active-nav
-              :dispatch   #(rf/dispatch [:set-active-nav :profile])}]])
+   [profile-button]])
 
 (defn nav
   []
@@ -50,6 +70,6 @@
        [:> icons/Menu]]
       [:> mui/Typography {:variant "h6" :style {:flexGrow 1}}
        "Grimsward"]
-      (if-let [logged-in? @(rf/subscribe [:logged-in?])]
+      (if @(rf/subscribe [:logged-in?])
         [nav-authenticated {:active-nav active-nav}]
         [nav-public {:active-nav active-nav}])]]))

@@ -3,7 +3,6 @@
             [re-frame.core :as rf]
             [app.components.page-nav :refer [page-nav]]
             [app.components.form-group :refer [form-group]]
-            [app.firebase.auth :refer [create-user-with-email-and-password]]
             ["@material-ui/core" :as mui]))
 
 (defn validate-passwords
@@ -13,7 +12,7 @@
 (defn on-create-account
   [sign-up-form]
   (if (validate-passwords sign-up-form)
-    (create-user-with-email-and-password sign-up-form)
+    (rf/dispatch [:sign-up sign-up-form])
     (rf/dispatch [:sign-up-failure "Passwords do not match"])))
 
 (defn sign-up
@@ -24,7 +23,7 @@
       (let [error @(rf/subscribe [:sign-up-failure])]
         [:<>
          [page-nav {:center "Sign Up"}]
-         [:form
+         [:form {:on-submit (fn [e] (.preventDefault e) (on-create-account @values))}
           [:> mui/Container {:maxWidth "xs"}
            (when error
              [:> mui/Typography {:variant "caption"
@@ -50,8 +49,8 @@
            [:> mui/Button {:variant   "contained"
                            :color     "primary"
                            :size      "large"
+                           :type      "submit"
                            :fullWidth true
-                           :on-click  #(on-create-account @values)
                            :style     {:marginTop    16
                                        :marginBottom 16}}
             "Create Account"]
