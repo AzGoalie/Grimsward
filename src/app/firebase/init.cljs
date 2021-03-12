@@ -1,6 +1,5 @@
 (ns app.firebase.init
-  (:require [re-frame.core :as rf]
-            ["firebase/app" :default firebase]
+  (:require ["firebase/app" :default firebase]
             ["firebase/auth"]
             [app.firebase.auth :refer [on-auth-state-changed]]))
 

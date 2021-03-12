@@ -54,5 +54,5 @@
             (rf/dispatch [:set-current-user {:user (parse-user user)}])
             (rf/dispatch [:remove-current-user])))
         (fn [error]
-          (if error
+          (when error
             (rf/dispatch [:log-in-failure (get error-codes (.-code error))]))))))
