@@ -3,17 +3,12 @@
             [re-frame.core :as rf]
             [app.db]
             [app.theme :refer [grimsward-theme]]
-            [app.components.page-nav :refer [page-nav]]
+            [app.router :as router]
     ;; -- firebase --
             [app.firebase.init :refer [firebase-init]]
     ;; -- auth --
-            [app.auth.views.profile :refer [profile]]
-            [app.auth.views.log-in :refer [log-in]]
-            [app.auth.views.sign-up :refer [sign-up]]
             [app.auth.events]
             [app.auth.subs]
-    ;; -- campaign --
-            [app.campaign.views.campaigns :refer [campaigns]]
     ;; -- nav --
             [app.nav.views :refer [nav]]
             [app.nav.events]
@@ -22,23 +17,14 @@
             ["@material-ui/core" :as mui]
             ["@material-ui/core/styles" :refer [ThemeProvider]]))
 
-(defn pages
-  [page-name]
-  (case page-name
-    :profile [profile]
-    :log-in [log-in]
-    :sign-up [sign-up]
-    :campaigns [campaigns]
-    [page-nav {:center "Home Page"}]))
-
 (defn app
   []
-  (let [active-nav @(rf/subscribe [:active-nav])]
+  (when-let [current-route @(rf/subscribe [:current-route])]
     [:> ThemeProvider {:theme grimsward-theme}
      [:> mui/CssBaseline]
-     [nav]
+     [nav (-> current-route :data :name)]
      [:> mui/Container
-      [pages active-nav]]]))
+      [(-> current-route :data :view)]]]))
 
 (defn ^:dev/after-load start
   []
@@ -48,5 +34,6 @@
 (defn ^:export init
   []
   (rf/dispatch-sync [:initialize-db])
-  (start)
-  (firebase-init))
+  (router/init-routes!)
+  (firebase-init)
+  (start))

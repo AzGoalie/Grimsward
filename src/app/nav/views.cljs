@@ -5,28 +5,25 @@
             ["@material-ui/icons" :as icons]))
 
 (defn nav-item
-  [{:keys [id href dispatch name active-nav]}]
+  [{:keys [id href name current-route]}]
   (:> mui/Typography
     [:> mui/Link {:href      href
-                  :on-click  dispatch
                   :color     "inherit"
                   :style     {:padding 10}
-                  :underline (if (= id active-nav) "always" "hover")}
+                  :underline (if (= id current-route) "always" "hover")}
      name]))
 
 (defn nav-public
-  [{:keys [active-nav]}]
+  [{:keys [current-route]}]
   [:<>
-   [nav-item {:id         :sign-up
-              :name       "Sign Up"
-              :href       "#sign-up"
-              :active-nav active-nav
-              :dispatch   #(rf/dispatch [:set-active-nav :sign-up])}]
-   [nav-item {:id         :log-in
-              :name       "Log In"
-              :href       "#log-in"
-              :active-nav active-nav
-              :dispatch   #(rf/dispatch [:set-active-nav :log-in])}]])
+   [nav-item {:id            :app.router/sign-up
+              :name          "Sign Up"
+              :href          "/sign-up"
+              :current-route current-route}]
+   [nav-item {:id            :app.router/log-in
+              :name          "Log In"
+              :href          "/log-in"
+              :current-route current-route}]])
 
 (defn profile-menu
   [anchor-el handle-close]
@@ -52,24 +49,22 @@
        [profile-menu @anchor-el handle-close]])))
 
 (defn nav-authenticated
-  [{:keys [active-nav]}]
+  [{:keys [current-route]}]
   [:<>
-   [nav-item {:id         :campaigns
-              :name       "Campaigns"
-              :href       "#campaigns"
-              :active-nav active-nav
-              :dispatch   #(rf/dispatch [:set-active-nav :campaigns])}]
+   [nav-item {:id            :app.router/campaigns
+              :name          "Campaigns"
+              :href          "/campaigns"
+              :current-route current-route}]
    [profile-button]])
 
 (defn nav
-  []
-  (let [active-nav @(rf/subscribe [:active-nav])]
-    [:> mui/AppBar {:position "static"}
-     [:> mui/Toolbar
-      [:> mui/IconButton {:edge "start" :color "inherit"}
-       [:> icons/Menu]]
-      [:> mui/Typography {:variant "h6" :style {:flexGrow 1}}
-       "Grimsward"]
-      (if @(rf/subscribe [:logged-in?])
-        [nav-authenticated {:active-nav active-nav}]
-        [nav-public {:active-nav active-nav}])]]))
+  [current-route]
+  [:> mui/AppBar {:position "static"}
+   [:> mui/Toolbar
+    [:> mui/IconButton {:edge "start" :color "inherit"}
+     [:> icons/Menu]]
+    [:> mui/Typography {:variant "h6" :style {:flexGrow 1}}
+     "Grimsward"]
+    (if @(rf/subscribe [:logged-in?])
+      [nav-authenticated {:current-route current-route}]
+      [nav-public {:current-route current-route}])]])

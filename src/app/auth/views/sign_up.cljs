@@ -54,8 +54,7 @@
                            :style     {:marginTop    16
                                        :marginBottom 16}}
             "Create Account"]
-           [:> mui/Link {:href     "#sign-up"
-                         :variant  "body2"
-                         :color    "inherit"
-                         :on-click #(rf/dispatch [:set-active-nav :log-in])}
+           [:> mui/Link {:href    "/log-in"
+                         :variant "body2"
+                         :color   "inherit"}
             "Already have an account? Log In!"]]]]))))

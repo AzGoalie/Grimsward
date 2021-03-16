@@ -22,12 +22,13 @@
     {:db       (-> db
                    (assoc :auth user)
                    (update-in [:errors] dissoc :log-in :sign-up))
-     :dispatch [:set-active-nav :campaigns]}))
+     :dispatch [:navigate :app.router/campaigns]}))
 
-(reg-event-db
+(reg-event-fx
   :remove-current-user
-  (fn [db _]
-    (dissoc db :auth)))
+  (fn [{:keys [db]} _]
+    {:db       (dissoc db :auth)
+     :dispatch [:navigate :app.router/frontpage]}))
 
 (reg-event-db
   :sign-up-failure

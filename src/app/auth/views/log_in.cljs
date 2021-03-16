@@ -37,8 +37,7 @@
                            :style     {:marginTop    16
                                        :marginBottom 16}}
             "Log In"]
-           [:> mui/Link {:href     "#sign-up"
-                         :variant  "body2"
-                         :color    "inherit"
-                         :on-click #(rf/dispatch [:set-active-nav :sign-up])}
+           [:> mui/Link {:href    "/sign-up"
+                         :variant "body2"
+                         :color   "inherit"}
             "Don't have an account? Sign Up!"]]]]))))
