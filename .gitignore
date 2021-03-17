@@ -3,3 +3,5 @@
 /public/js
 .shadow-cljs
 .DS_Store
+/.cpcache/
+/.idea/

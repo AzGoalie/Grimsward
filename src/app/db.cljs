@@ -6,6 +6,6 @@
                      :current-route nil})
 
 (rf/reg-event-db
-  :initialize-db
-  (fn [_ _]
-    initial-app-db))
+ :initialize-db
+ (fn [_ _]
+   initial-app-db))

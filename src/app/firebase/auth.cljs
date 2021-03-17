@@ -17,42 +17,42 @@
                                 :message "Password is too weak"}})
 
 (rf/reg-fx
-  :firebase/sign-in-with-email-and-password
-  (fn
-    [{:keys [email password]}]
-    (-> (.auth firebase)
-        (.signInWithEmailAndPassword email password)
-        (.catch #(rf/dispatch [:log-in-failure (get error-codes (.-code %))])))))
+ :firebase/sign-in-with-email-and-password
+ (fn
+   [{:keys [email password]}]
+   (-> (.auth firebase)
+       (.signInWithEmailAndPassword email password)
+       (.catch #(rf/dispatch [:log-in-failure (get error-codes (.-code %))])))))
 
 (rf/reg-fx
-  :firebase/create-user-with-email-and-password
-  (fn
-    [{:keys [email password]}]
-    (-> (.auth firebase)
-        (.createUserWithEmailAndPassword email password)
-        (.catch #(rf/dispatch [:sign-up-failure (get error-codes (.-code %))])))))
+ :firebase/create-user-with-email-and-password
+ (fn
+   [{:keys [email password]}]
+   (-> (.auth firebase)
+       (.createUserWithEmailAndPassword email password)
+       (.catch #(rf/dispatch [:sign-up-failure (get error-codes (.-code %))])))))
 
 (rf/reg-fx
-  :firebase/sign-out
-  (fn
-    []
-    (-> (.auth firebase)
-        (.signOut))))
+ :firebase/sign-out
+ (fn
+   []
+   (-> (.auth firebase)
+       (.signOut))))
 
 (defn parse-user
   [user]
   (js->clj
-    (-> user js/JSON.stringify js/JSON.parse)
-    :keywordize-keys true))
+   (-> user js/JSON.stringify js/JSON.parse)
+   :keywordize-keys true))
 
 (defn on-auth-state-changed
   []
   (-> (.auth firebase)
       (.onAuthStateChanged
-        (fn [user]
-          (if user
-            (rf/dispatch [:set-current-user {:user (parse-user user)}])
-            (rf/dispatch [:remove-current-user])))
-        (fn [error]
-          (when error
-            (rf/dispatch [:log-in-failure (get error-codes (.-code error))]))))))
+       (fn [user]
+         (if user
+           (rf/dispatch [:set-current-user {:user (parse-user user)}])
+           (rf/dispatch [:remove-current-user])))
+       (fn [error]
+         (when error
+           (rf/dispatch [:log-in-failure (get error-codes (.-code error))]))))))

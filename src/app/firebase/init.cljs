@@ -3,7 +3,6 @@
             ["firebase/auth"]
             [app.firebase.auth :refer [on-auth-state-changed]]))
 
-
 (defn firebase-init
   []
   (.initializeApp firebase #js {:apiKey            "AIzaSyBBGwGdOfB5vxz1tCisL6dvMSFvB75NcqY"

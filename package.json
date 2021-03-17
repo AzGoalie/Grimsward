@@ -1,24 +1,26 @@
 {
-    "name": "Grimsward",
-    "version": "1.0.0",
-    "license": "Apache-2.0",
-    "scripts": {
-        "dev": "shadow-cljs watch app",
-        "release": "shadow-cljs release app",
-        "server": "shadow-cljs server",
-        "clean": "rm -rf target && rm -rf public/js",
-        "clean-win": "rmdir /s /q public/js & rmdir /s /q target"
-    },
-    "dependencies": {
-        "@material-ui/core": "^4.11.2",
-        "@material-ui/icons": "^4.11.2",
-        "firebase": "^8.2.1",
-        "react": "^16.14.0",
-        "react-dom": "^16.14.0"
-    },
-    "devDependencies": {
-        "highlight.js": "9.18.1",
-        "react-highlight.js": "^1.0.7",
-        "shadow-cljs": "^2.11.8"
-    }
+  "name": "Grimsward",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "scripts": {
+    "fmt:check": "clojure -Sdeps '{:deps {cljfmt/cljfmt {:mvn/version \"\"0.7.0\"\"}}}' -m cljfmt.main check",
+    "fmt:fmt": "clojure -Sdeps '{:deps {cljfmt/cljfmt {:mvn/version \"\"0.7.0\"\"}}}' -m cljfmt.main fix",
+    "dev": "shadow-cljs watch app",
+    "release": "shadow-cljs release app",
+    "server": "shadow-cljs server",
+    "clean": "rm -rf target && rm -rf public/js",
+    "clean-win": "rmdir /s /q public/js & rmdir /s /q target"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
+    "firebase": "^8.2.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
+  },
+  "devDependencies": {
+    "highlight.js": "9.18.1",
+    "react-highlight.js": "^1.0.7",
+    "shadow-cljs": "^2.11.8"
+  }
 }

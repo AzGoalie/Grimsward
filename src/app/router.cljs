@@ -8,34 +8,33 @@
             [app.components.page-nav :refer [page-nav]]
             [app.auth.views.log-in :refer [log-in]]
             [app.auth.views.sign-up :refer [sign-up]]
-            [app.campaign.views.campaigns :refer [campaigns]]
-            ))
+            [app.campaign.views.campaigns :refer [campaigns]]))
 
 (rf/reg-event-db
-  :navigated
-  (fn [db [_ new-match]]
-    (let [old-match (:current-route db)
-          controllers (rfc/apply-controllers (:controllers old-match) new-match)]
-      (assoc db :current-route (assoc new-match :controllers controllers)))))
+ :navigated
+ (fn [db [_ new-match]]
+   (let [old-match (:current-route db)
+         controllers (rfc/apply-controllers (:controllers old-match) new-match)]
+     (assoc db :current-route (assoc new-match :controllers controllers)))))
 
 (defn on-navigate [new-match]
   (when new-match
     (rf/dispatch [:navigated new-match])))
 
 (rf/reg-event-fx
-  :navigate
-  (fn [_ [_ & route]]
-    {:navigate! route}))
+ :navigate
+ (fn [_ [_ & route]]
+   {:navigate! route}))
 
 (rf/reg-fx
-  :navigate!
-  (fn [route]
-    (apply rfe/push-state route)))
+ :navigate!
+ (fn [route]
+   (apply rfe/push-state route)))
 
 (rf/reg-sub
-  :current-route
-  (fn [db]
-    (:current-route db)))
+ :current-route
+ (fn [db]
+   (:current-route db)))
 
 (def routes
   ["/"
@@ -54,12 +53,12 @@
 
 (def router
   (reitit/router
-    routes
-    {:data {:coercion malli/coercion}}))
+   routes
+   {:data {:coercion malli/coercion}}))
 
 (defn init-routes! []
   (js/console.log "initializing routes")
   (rfe/start!
-    router
-    on-navigate
-    {:use-fragment false}))
+   router
+   on-navigate
+   {:use-fragment false}))

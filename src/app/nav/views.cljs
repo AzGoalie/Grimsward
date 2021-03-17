@@ -7,11 +7,11 @@
 (defn nav-item
   [{:keys [id href name current-route]}]
   (:> mui/Typography
-    [:> mui/Link {:href      href
-                  :color     "inherit"
-                  :style     {:padding 10}
-                  :underline (if (= id current-route) "always" "hover")}
-     name]))
+      [:> mui/Link {:href      href
+                    :color     "inherit"
+                    :style     {:padding 10}
+                    :underline (if (= id current-route) "always" "hover")}
+       name]))
 
 (defn nav-public
   [{:keys [current-route]}]
