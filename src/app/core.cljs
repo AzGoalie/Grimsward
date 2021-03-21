@@ -27,7 +27,8 @@
 
 (defn ^:dev/after-load start
   []
-  (rdom/render [app]
+  (rf/clear-subscription-cache!)
+  (rdom/render [#'app]
                (.getElementById js/document "app")))
 
 (defn ^:export init

@@ -43,16 +43,16 @@
      :view #(page-nav {:center "Frontpage"})}]
    ["log-in"
     {:name ::log-in
-     :view log-in}]
+     :view #'log-in}]
    ["sign-up"
     {:name ::sign-up
-     :view sign-up}]
+     :view #'sign-up}]
    ["profile"
     {:name ::profile
-     :view profile}]
+     :view #'profile}]
    ["campaigns"
     {:name ::campaigns
-     :view campaigns}]])
+     :view #'campaigns}]])
 
 (def router
   (reitit/router
