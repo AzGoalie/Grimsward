@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "license": "Apache-2.0",
   "scripts": {
-    "fmt:check": "clojure -M -Sdeps '{:deps {cljfmt/cljfmt {:mvn/version \"\"0.7.0\"\"}}}' -m cljfmt.main check",
-    "fmt:fmt": "clojure -M -Sdeps '{:deps {cljfmt/cljfmt {:mvn/version \"\"0.7.0\"\"}}}' -m cljfmt.main fix",
+    "fmt:check": "clojure -Sdeps '{:deps {cljfmt/cljfmt {:mvn/version \"0.7.0\"}}}' -M -m cljfmt.main check",
+    "fmt:fmt": "clojure -Sdeps '{:deps {cljfmt/cljfmt {:mvn/version \"0.7.0\"}}}' -M -m cljfmt.main fix",
     "dev": "shadow-cljs watch app",
     "release": "shadow-cljs release app",
     "server": "shadow-cljs server",

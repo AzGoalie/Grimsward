@@ -1,6 +1,7 @@
 (ns app.firebase.init
   (:require ["firebase/app" :default firebase]
             ["firebase/auth"]
+            ["firebase/firestore"]
             [app.firebase.auth :refer [on-auth-state-changed]]))
 
 (defn firebase-init

@@ -4,7 +4,6 @@
             [reitit.frontend.controllers :as rfc]
             [reitit.coercion.malli :as malli]
             [re-frame.core :as rf]
-
             [app.components.page-nav :refer [page-nav]]
             [app.auth.views.log-in :refer [log-in]]
             [app.auth.views.sign-up :refer [sign-up]]

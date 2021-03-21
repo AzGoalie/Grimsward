@@ -23,8 +23,7 @@
     [:> ThemeProvider {:theme grimsward-theme}
      [:> mui/CssBaseline]
      [nav (-> current-route :data :name)]
-     [:> mui/Container
-      [(-> current-route :data :view)]]]))
+     [(-> current-route :data :view)]]))
 
 (defn ^:dev/after-load start
   []
