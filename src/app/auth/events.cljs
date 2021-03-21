@@ -4,31 +4,31 @@
 (reg-event-fx
  :log-in
  (fn [_ [_ credentials]]
-   {:firebase/sign-in-with-email-and-password credentials}))
+   {:firebase/sign-in-with-email-and-password credentials
+    :dispatch                                 [:navigate :app.router/campaigns]}))
 
 (reg-event-fx
  :log-out
  (fn [_ _]
-   {:firebase/sign-out nil}))
+   {:firebase/sign-out nil
+    :dispatch          [:navigate :app.router/frontpage]}))
 
 (reg-event-fx
  :sign-up
  (fn [_ [_ credentials]]
    {:firebase/create-user-with-email-and-password credentials}))
 
-(reg-event-fx
+(reg-event-db
  :set-current-user
- (fn [{:keys [db]} [_ {:keys [user]}]]
-   {:db       (-> db
-                  (assoc :auth user)
-                  (update-in [:errors] dissoc :log-in :sign-up))
-    :dispatch [:navigate :app.router/campaigns]}))
+ (fn [db [_ user]]
+   (-> db
+       (assoc :auth user)
+       (update-in [:errors] dissoc :log-in :sign-up))))
 
-(reg-event-fx
+(reg-event-db
  :remove-current-user
- (fn [{:keys [db]} _]
-   {:db       (dissoc db :auth)
-    :dispatch [:navigate :app.router/frontpage]}))
+ (fn [db _]
+   (dissoc db :auth)))
 
 (reg-event-db
  :sign-up-failure

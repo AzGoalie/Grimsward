@@ -32,7 +32,7 @@
    [:> mui/Paper
     [:> mui/ClickAwayListener {:on-click-away handle-close}
      [:> mui/MenuList
-      [:> mui/MenuItem {:on-click handle-close}
+      [:> mui/MenuItem {:on-click (fn [_] (handle-close) (rf/dispatch [:navigate :app.router/profile]))}
        "Profile"]
       [:> mui/MenuItem {:on-click #(rf/dispatch [:log-out])}
        "Sign Out"]]]]])

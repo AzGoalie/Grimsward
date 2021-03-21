@@ -4,7 +4,7 @@
 (reg-sub
  :logged-in?
  (fn [db _]
-   (boolean (get-in db [:auth :uid]))))
+   (:auth db)))
 
 (reg-sub
  :log-in-failure

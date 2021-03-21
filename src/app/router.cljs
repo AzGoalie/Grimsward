@@ -7,6 +7,7 @@
             [app.components.page-nav :refer [page-nav]]
             [app.auth.views.log-in :refer [log-in]]
             [app.auth.views.sign-up :refer [sign-up]]
+            [app.auth.views.profile :refer [profile]]
             [app.campaign.views.campaigns :refer [campaigns]]))
 
 (rf/reg-event-db
@@ -46,6 +47,9 @@
    ["sign-up"
     {:name ::sign-up
      :view sign-up}]
+   ["profile"
+    {:name ::profile
+     :view profile}]
    ["campaigns"
     {:name ::campaigns
      :view campaigns}]])
