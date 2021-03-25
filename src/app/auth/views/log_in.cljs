@@ -3,6 +3,7 @@
             [re-frame.core :as rf]
             [app.components.page-nav :refer [page-nav]]
             [app.components.form-group :refer [form-group]]
+            [app.components.error-message :refer [error-message]]
             ["@material-ui/core" :as mui]))
 
 (defn log-in
@@ -15,10 +16,7 @@
        [page-nav {:center "Log In"}]
        [:form {:on-submit (fn [e] (.preventDefault e) (rf/dispatch [:log-in @values]))}
         [:> mui/Container {:maxWidth "xs"}
-         (when-let [error-message (:message @error)]
-           [:> mui/Typography {:variant "caption"
-                               :color   "error"}
-            error-message])
+         [error-message @error]
          [form-group {:label  "Email Address"
                       :id     :email
                       :type   "email"
