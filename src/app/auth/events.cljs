@@ -19,17 +19,33 @@
    {:firebase/create-user-with-email-and-password
     (merge credentials {:on-success #(dispatch [:navigate :app.router/campaigns])})}))
 
+(reg-event-fx
+ :update-email
+ (fn [_ [_ email]]
+   {:firebase/update-user-email
+    {:email      email
+     :on-success #(dispatch [:clear-errors])}}))
+
+(reg-event-fx
+ :update-password
+ (fn [_ [_ password]]
+   {:firebase/update-user-password
+    {:password   password
+     :on-success #(dispatch [:clear-error])}}))
+
 (reg-event-db
  :set-current-user
  (fn [db [_ user]]
    (-> db
        (assoc :auth user)
-       (update-in [:errors] dissoc :log-in :sign-up))))
+       (dissoc :errors))))
 
 (reg-event-db
  :remove-current-user
  (fn [db _]
-   (dissoc db :auth)))
+   (-> db
+       (dissoc :auth)
+       (dissoc :errors))))
 
 (reg-event-db
  :sign-up-failure
@@ -40,3 +56,13 @@
  :log-in-failure
  (fn [db [_ error]]
    (assoc-in db [:errors :log-in] error)))
+
+(reg-event-db
+ :update-user-failure
+ (fn [db [_ error]]
+   (assoc-in db [:errors :update-user] error)))
+
+(reg-event-db
+ :clear-errors
+ (fn [db _]
+   (dissoc db :errors)))

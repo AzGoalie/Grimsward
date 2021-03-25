@@ -4,7 +4,7 @@
             [app.components.page-nav :refer [page-nav]]
             [app.components.form-group :refer [form-group]]
             [app.components.error-message :refer [error-message]]
-            [app.auth.utils :refer [passwords-mismatch? invalid-password? dispatch-error]]
+            [app.auth.utils :refer [passwords-mismatch? invalid-password? invalid-email? dispatch-error]]
             ["@material-ui/core" :as mui]))
 
 (def sign-up-error (partial dispatch-error :sign-up-failure))
@@ -36,8 +36,7 @@
          [form-group {:label  "Email Address"
                       :id     :email
                       :type   "email"
-                      :error  (or (= :invalid-email (:code error))
-                                  (= :email-in-use (:code error)))
+                      :error  (invalid-email? @error)
                       :values values}]
          [form-group {:label  "Password"
                       :type   "password"

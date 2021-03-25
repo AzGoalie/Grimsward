@@ -13,7 +13,12 @@
 
 (def passwords-mismatch? (complement passwords-match?))
 
+(defn invalid-email?
+  [error]
+  (or (= :invalid-email (:code error))
+      (= :email-in-use (:code error))))
+
 (defn dispatch-error
   [error-type error-code error-message]
-  (rf/dispatch [error-type {:code error-code
+  (rf/dispatch [error-type {:code    error-code
                             :message error-message}]))

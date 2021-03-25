@@ -1,7 +1,7 @@
 (ns app.db
   (:require [re-frame.core :as rf]))
 
-(def initial-app-db {:auth          {:uid nil}
+(def initial-app-db {:auth          {}
                      :errors        {}
                      :current-route nil})
 

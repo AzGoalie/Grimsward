@@ -15,3 +15,13 @@
  :sign-up-failure
  (fn [db _]
    (get-in db [:errors :sign-up])))
+
+(reg-sub
+ :update-user-failure
+ (fn [db _]
+   (get-in db [:errors :update-user])))
+
+(reg-sub
+ :user
+ (fn [db _]
+   (get-in db [:auth :user])))
