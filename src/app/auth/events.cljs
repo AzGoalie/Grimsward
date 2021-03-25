@@ -1,11 +1,11 @@
 (ns app.auth.events
-  (:require [re-frame.core :refer [reg-event-db reg-event-fx]]))
+  (:require [re-frame.core :refer [reg-event-db reg-event-fx dispatch]]))
 
 (reg-event-fx
  :log-in
  (fn [_ [_ credentials]]
-   {:firebase/sign-in-with-email-and-password credentials
-    :dispatch                                 [:navigate :app.router/campaigns]}))
+   {:firebase/sign-in-with-email-and-password
+    (merge credentials {:on-success #(dispatch [:navigate :app.router/campaigns])})}))
 
 (reg-event-fx
  :log-out
@@ -16,7 +16,8 @@
 (reg-event-fx
  :sign-up
  (fn [_ [_ credentials]]
-   {:firebase/create-user-with-email-and-password credentials}))
+   {:firebase/create-user-with-email-and-password
+    (merge credentials {:on-success #(dispatch [:navigate :app.router/campaigns])})}))
 
 (reg-event-db
  :set-current-user

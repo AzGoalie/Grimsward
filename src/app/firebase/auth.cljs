@@ -19,17 +19,19 @@
 (rf/reg-fx
  :firebase/sign-in-with-email-and-password
  (fn
-   [{:keys [email password]}]
+   [{:keys [email password on-success]}]
    (-> (.auth firebase)
        (.signInWithEmailAndPassword email password)
+       (.then #(on-success))
        (.catch #(rf/dispatch [:log-in-failure (get error-codes (.-code %))])))))
 
 (rf/reg-fx
  :firebase/create-user-with-email-and-password
  (fn
-   [{:keys [email password]}]
+   [{:keys [email password on-success]}]
    (-> (.auth firebase)
        (.createUserWithEmailAndPassword email password)
+       (.then #(on-success))
        (.catch #(rf/dispatch [:sign-up-failure (get error-codes (.-code %))])))))
 
 (rf/reg-fx
