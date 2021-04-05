@@ -5,7 +5,8 @@
             [app.components.form-group :refer [form-group]]
             [app.components.error-message :refer [error-message]]
             [app.auth.utils :refer [invalid-email? invalid-password? passwords-mismatch? dispatch-error]]
-            ["@material-ui/core" :as mui]))
+            ["@material-ui/core/Container" :default Container]
+            ["@material-ui/core/Button" :default Button]))
 
 (def update-user-error (partial dispatch-error :update-user-failure))
 
@@ -13,11 +14,11 @@
   [update-user-form]
   (cond
     (invalid-password? update-user-form) (update-user-error
-                                          :weak-password
-                                          "Password must be at least 6 characters long")
+                                           :weak-password
+                                           "Password must be at least 6 characters long")
     (passwords-mismatch? update-user-form) (update-user-error
-                                            :mismatch
-                                            "Passwords do not match")
+                                             :mismatch
+                                             "Passwords do not match")
     :else (rf/dispatch [:update-password (:password update-user-form)])))
 
 (defn on-update-user
@@ -37,7 +38,7 @@
       [:<>
        [page-nav {:center "Profile"}]
        [:form {:on-submit (fn [e] (.preventDefault e) (on-update-user email @values))}
-        [:> mui/Container {:maxWidth "xs"}
+        [:> Container {:maxWidth "xs"}
          [error-message @error]
          [form-group {:label  "Email Address"
                       :id     :email
@@ -54,13 +55,13 @@
                       :type   "password"
                       :error  (passwords-mismatch? @values)
                       :values values}]
-         [:> mui/Button {:variant   "contained"
-                         :color     "primary"
-                         :size      "large"
-                         :type      "submit"
-                         :fullWidth true
-                         :style     {:marginTop    16
-                                     :marginBottom 16}}
+         [:> Button {:variant   "contained"
+                     :color     "primary"
+                     :size      "large"
+                     :type      "submit"
+                     :fullWidth true
+                     :style     {:marginTop    16
+                                 :marginBottom 16}}
           "Update Account"]]]])))
 
 (defn profile []

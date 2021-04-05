@@ -51,8 +51,13 @@
     {:name ::profile
      :view #'profile}]
    ["campaigns"
-    {:name ::campaigns
-     :view #'campaigns}]])
+    [""
+     {:name ::campaigns
+      :view #'campaigns}]
+    ["/:campaign-id"
+     {:name ::campaign
+      :path {:campaign-id string?}
+      :view (fn [] [:div "AAAA"])}]]])
 
 (def router
   (reitit/router

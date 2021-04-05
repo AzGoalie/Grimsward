@@ -4,7 +4,9 @@
             [app.components.page-nav :refer [page-nav]]
             [app.components.form-group :refer [form-group]]
             [app.components.error-message :refer [error-message]]
-            ["@material-ui/core" :as mui]))
+            ["@material-ui/core/Container" :default Container]
+            ["@material-ui/core/Button" :default Button]
+            ["@material-ui/core/Link" :default Link]))
 
 (defn log-in
   []
@@ -15,7 +17,7 @@
       [:<>
        [page-nav {:center "Log In"}]
        [:form {:on-submit (fn [e] (.preventDefault e) (rf/dispatch [:log-in @values]))}
-        [:> mui/Container {:maxWidth "xs"}
+        [:> Container {:maxWidth "xs"}
          [error-message @error]
          [form-group {:label  "Email Address"
                       :id     :email
@@ -27,15 +29,15 @@
                       :id     :password
                       :error  (boolean @error)
                       :values values}]
-         [:> mui/Button {:variant   "contained"
-                         :color     "primary"
-                         :size      "large"
-                         :type      "submit"
-                         :fullWidth true
-                         :style     {:marginTop    16
-                                     :marginBottom 16}}
+         [:> Button {:variant   "contained"
+                     :color     "primary"
+                     :size      "large"
+                     :type      "submit"
+                     :fullWidth true
+                     :style     {:marginTop    16
+                                 :marginBottom 16}}
           "Log In"]
-         [:> mui/Link {:href    "/sign-up"
-                       :variant "body2"
-                       :color   "inherit"}
+         [:> Link {:href    "/sign-up"
+                   :variant "body2"
+                   :color   "inherit"}
           "Don't have an account? Sign Up!"]]]])))

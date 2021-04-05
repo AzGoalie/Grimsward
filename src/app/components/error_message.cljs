@@ -1,9 +1,9 @@
 (ns app.components.error-message
-  (:require ["@material-ui/core" :as mui]))
+  (:require ["@material-ui/core/Typography" :default Typography]))
 
 (defn error-message
   [error]
   (when-let [error-message (:message error)]
-    [:> mui/Typography {:variant "caption"
-                        :color   "error"}
+    [:> Typography {:variant "caption"
+                    :color   "error"}
      error-message]))

@@ -1,17 +1,27 @@
 (ns app.nav.views
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
-            ["@material-ui/core" :as mui]
-            ["@material-ui/icons" :as icons]))
+            ["@material-ui/core/Typography" :default Typography]
+            ["@material-ui/core/Link" :default Link]
+            ["@material-ui/core/Paper" :default Paper]
+            ["@material-ui/core/ClickAwayListener" :default ClickAwayListener]
+            ["@material-ui/core/MenuList" :default MenuList]
+            ["@material-ui/core/MenuItem" :default MenuItem]
+            ["@material-ui/core/Popper" :default Popper]
+            ["@material-ui/core/IconButton" :default IconButton]
+            ["@material-ui/core/AppBar" :default AppBar]
+            ["@material-ui/core/Toolbar" :default Toolbar]
+            ["@material-ui/icons/AccountCircle" :default AccountCircle]
+            ["@material-ui/icons/Menu" :default Menu]))
 
 (defn nav-item
   [{:keys [id href name current-route]}]
-  (:> mui/Typography
-      [:> mui/Link {:href      href
-                    :color     "inherit"
-                    :style     {:padding 10}
-                    :underline (if (= id current-route) "always" "hover")}
-       name]))
+  (:> Typography
+    [:> Link {:href      href
+              :color     "inherit"
+              :style     {:padding 10}
+              :underline (if (= id current-route) "always" "hover")}
+     name]))
 
 (defn nav-public
   [{:keys [current-route]}]
@@ -27,14 +37,14 @@
 
 (defn profile-menu
   [anchor-el handle-close]
-  [:> mui/Popper {:open      (boolean anchor-el)
-                  :anchor-el anchor-el}
-   [:> mui/Paper
-    [:> mui/ClickAwayListener {:on-click-away handle-close}
-     [:> mui/MenuList
-      [:> mui/MenuItem {:on-click (fn [_] (handle-close) (rf/dispatch [:navigate :app.router/profile]))}
+  [:> Popper {:open      (boolean anchor-el)
+              :anchor-el anchor-el}
+   [:> Paper
+    [:> ClickAwayListener {:on-click-away handle-close}
+     [:> MenuList
+      [:> MenuItem {:on-click (fn [_] (handle-close) (rf/dispatch [:navigate :app.router/profile]))}
        "Profile"]
-      [:> mui/MenuItem {:on-click #(rf/dispatch [:log-out])}
+      [:> MenuItem {:on-click #(rf/dispatch [:log-out])}
        "Sign Out"]]]]])
 
 (defn profile-button
@@ -44,8 +54,8 @@
         handle-close #(reset! anchor-el nil)]
     (fn []
       [:<>
-       [:> mui/IconButton {:on-click handle-click}
-        [:> icons/AccountCircle]]
+       [:> IconButton {:on-click handle-click}
+        [:> AccountCircle]]
        [profile-menu @anchor-el handle-close]])))
 
 (defn nav-authenticated
@@ -59,11 +69,11 @@
 
 (defn nav
   [current-route]
-  [:> mui/AppBar {:position "static"}
-   [:> mui/Toolbar
-    [:> mui/IconButton {:edge "start" :color "inherit"}
-     [:> icons/Menu]]
-    [:> mui/Typography {:variant "h6" :style {:flexGrow 1}}
+  [:> AppBar {:position "static"}
+   [:> Toolbar
+    [:> IconButton {:edge "start" :color "inherit"}
+     [:> Menu]]
+    [:> Typography {:variant "h6" :style {:flexGrow 1}}
      "Grimsward"]
     (if @(rf/subscribe [:logged-in?])
       [nav-authenticated {:current-route current-route}]

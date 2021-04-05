@@ -16,14 +16,14 @@
     ;; -- campaigns --
             [app.campaign.subs]
     ;; -- npm deps --
-            ["@material-ui/core" :as mui]
-            ["@material-ui/core/styles" :refer [ThemeProvider]]))
+            ["@material-ui/core/CssBaseline" :default CssBaseline]
+            ["@material-ui/core/styles/MuiThemeProvider" :default ThemeProvider]))
 
 (defn app
   []
   (when-let [current-route @(rf/subscribe [:current-route])]
     [:> ThemeProvider {:theme grimsward-theme}
-     [:> mui/CssBaseline]
+     [:> CssBaseline]
      [nav (-> current-route :data :name)]
      [(-> current-route :data :view)]]))
 
