@@ -24,7 +24,7 @@
    [{:keys [email password on-success]}]
    (-> (.auth firebase)
        (.signInWithEmailAndPassword email password)
-       (.then #(on-success))
+       (.then on-success)
        (.catch #(rf/dispatch [:log-in-failure (get error-codes (.-code %))])))))
 
 (rf/reg-fx
@@ -33,7 +33,7 @@
    [{:keys [email password on-success]}]
    (-> (.auth firebase)
        (.createUserWithEmailAndPassword email password)
-       (.then #(on-success))
+       (.then on-success)
        (.catch #(rf/dispatch [:sign-up-failure (get error-codes (.-code %))])))))
 
 (rf/reg-fx
@@ -43,7 +43,7 @@
    (-> (.auth firebase)
        (.-currentUser)
        (.updateEmail email)
-       (.then #(on-success))
+       (.then on-success)
         ;; TODO Implement reauthentication when needed
        (.catch #(rf/dispatch [:update-user-failure (get error-codes (.-code %))])))))
 
@@ -54,7 +54,7 @@
    (-> (.auth firebase)
        (.-currentUser)
        (.updatePassword password)
-       (.then #(on-success))
+       (.then on-success)
         ;; TODO Implement reauthentication when needed
        (.catch #(rf/dispatch [:update-user-failure (get error-codes (.-code %))])))))
 

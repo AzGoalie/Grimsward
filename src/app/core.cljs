@@ -13,6 +13,8 @@
             [app.nav.views :refer [nav]]
             [app.nav.events]
             [app.nav.subs]
+    ;; -- campaigns --
+            [app.campaign.subs]
     ;; -- npm deps --
             ["@material-ui/core" :as mui]
             ["@material-ui/core/styles" :refer [ThemeProvider]]))

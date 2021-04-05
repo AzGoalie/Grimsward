@@ -4,21 +4,25 @@
 
 (defn page-nav
   [{:keys [left center right]}]
-  [:> mui/Grid {:container true
-                :justify   "space-between"
-                :style     {:padding 16}}
-   [:> mui/Grid {:item true
-                 :xs   4}
+  [:> mui/Grid {:container   true
+                :align-items "center"
+                :style       {:padding 16}}
+   [:> mui/Grid {:item      true
+                 :container true
+                 :justify   "flex-start"
+                 :sm        true}
     (when left
       [:> mui/IconButton {:aria-label "Back"}
        [:> ChevronLeft]])]
    [:> mui/Grid {:item true
-                 :xs   4}
+                 :sm   true}
     [:> mui/Typography {:variant      "h2"
                         :align        "center"
                         :gutterBottom true}
      center]]
-   [:> mui/Grid {:item true
-                 :xs   4}
+   [:> mui/Grid {:item      true
+                 :container true
+                 :justify   "flex-end"
+                 :sm        true}
     (when right
       right)]])
