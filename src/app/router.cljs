@@ -4,11 +4,11 @@
             [reitit.frontend.controllers :as rfc]
             [reitit.coercion.malli :as malli]
             [re-frame.core :as rf]
-            [app.components.page-nav :refer [page-nav]]
             [app.auth.views.log-in :refer [log-in]]
             [app.auth.views.sign-up :refer [sign-up]]
             [app.auth.views.profile :refer [profile]]
-            [app.campaign.views.campaigns :refer [campaigns]]))
+            [app.campaign.views.campaigns :refer [campaigns]]
+            ["@chakra-ui/react" :refer [Heading]]))
 
 (rf/reg-event-db
  :navigated
@@ -36,12 +36,16 @@
  (fn [db]
    (:current-route db)))
 
+(defn frontpage
+  []
+  [:> Heading {:align "center"} "Frontpage"])
+
 (def routes
   ["/"
    [""
     {:name ::frontpage
-     :view #(page-nav {:center "Frontpage"})}]
-   ["log-in"
+     :view #'frontpage}]
+   ["sign-in"
     {:name ::log-in
      :view #'log-in}]
    ["sign-up"

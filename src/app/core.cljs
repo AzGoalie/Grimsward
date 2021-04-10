@@ -16,14 +16,12 @@
     ;; -- campaigns --
             [app.campaign.subs]
     ;; -- npm deps --
-            ["@material-ui/core" :as mui]
-            ["@material-ui/core/styles" :refer [ThemeProvider]]))
+            ["@chakra-ui/react" :refer [ChakraProvider]]))
 
 (defn app
   []
   (when-let [current-route @(rf/subscribe [:current-route])]
-    [:> ThemeProvider {:theme grimsward-theme}
-     [:> mui/CssBaseline]
+    [:> ChakraProvider {:theme grimsward-theme}
      [nav (-> current-route :data :name)]
      [(-> current-route :data :view)]]))
 

@@ -1,25 +1,31 @@
 (ns app.campaign.views.campaign-card
-  (:require [reagent.core :as r]
-            [cljs-time.format :refer [unparse formatters]]
-            ["@material-ui/core" :as mui]
-            ["@material-ui/icons" :as icons]))
+  (:require [cljs-time.format :refer [unparse formatters]]
+            ["@chakra-ui/react" :refer [Avatar Box Flex Heading Spacer Text Tooltip]]))
 
 (defn player-icons
   [players]
   [:<>
    (for [player players]
      ^{:key player}
-     [:> mui/Tooltip {:title player}
-      [:> icons/AccountCircle]])])
+     [:> Tooltip {:label player :aria-label "Player Name"}
+      [:> Avatar {:size "xs"}]])])
 
 (defn campaign-card
   [{:keys [title description players next-session]}]
-  [:> mui/Grid {:item true :xs 12}
-   [:> mui/Card
-    [:> mui/CardActionArea
-     [:> mui/CardHeader {:title     title
-                         :subheader (r/as-element [:<>
-                                                   description
-                                                   [:br]
-                                                   (str "Next Session: " (unparse (formatters :date) next-session))])
-                         :action    (r/as-element [player-icons players])}]]]])
+  [:> Box {:as            "a"
+           :bg            "gray.700"
+           :href          "/somewhere"
+           :overflow      "hidden"
+           :p             4
+           :box-shadow    "md"
+           :border-radius "md"}
+   [:> Flex
+    [:> Heading {:size "md"}
+     title]
+    [:> Spacer]
+    [player-icons players]]
+   [:> Text
+    description]
+   [:> Text {:font-size "sm"
+             :color     "gray.400"}
+    (str "Next Session: " (unparse (formatters :date) next-session))]])
