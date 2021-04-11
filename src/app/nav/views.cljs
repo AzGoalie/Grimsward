@@ -1,70 +1,58 @@
 (ns app.nav.views
   (:require [reagent.core :as r]
             [re-frame.core :as rf]
-            ["@material-ui/core" :as mui]
-            ["@material-ui/icons" :as icons]))
+            ["@chakra-ui/react" :refer [Avatar Box Button Flex Heading HStack Menu MenuButton MenuItem MenuList Spacer]]))
 
-(defn nav-item
-  [{:keys [id href name current-route]}]
-  (:> mui/Typography
-      [:> mui/Link {:href      href
-                    :color     "inherit"
-                    :style     {:padding 10}
-                    :underline (if (= id current-route) "always" "hover")}
-       name]))
+(defn nav-button
+  [label href]
+  [:> Button {:as          "a"
+              :font-size   "sm"
+              :font-weight "600"
+              :href        href}
+   label])
+
+(defn nav-link
+  [label href]
+  [:> Button {:as          "a"
+              :variant     "link"
+              :font-size   "sm"
+              :font-weight 400
+              :href        href}
+   label])
 
 (defn nav-public
-  [{:keys [current-route]}]
-  [:<>
-   [nav-item {:id            :app.router/sign-up
-              :name          "Sign Up"
-              :href          "/sign-up"
-              :current-route current-route}]
-   [nav-item {:id            :app.router/log-in
-              :name          "Log In"
-              :href          "/log-in"
-              :current-route current-route}]])
-
-(defn profile-menu
-  [anchor-el handle-close]
-  [:> mui/Popper {:open      (boolean anchor-el)
-                  :anchor-el anchor-el}
-   [:> mui/Paper
-    [:> mui/ClickAwayListener {:on-click-away handle-close}
-     [:> mui/MenuList
-      [:> mui/MenuItem {:on-click (fn [_] (handle-close) (rf/dispatch [:navigate :app.router/profile]))}
-       "Profile"]
-      [:> mui/MenuItem {:on-click #(rf/dispatch [:log-out])}
-       "Sign Out"]]]]])
-
-(defn profile-button
   []
-  (let [anchor-el (r/atom nil)
-        handle-click #(reset! anchor-el (.-currentTarget %))
-        handle-close #(reset! anchor-el nil)]
-    (fn []
-      [:<>
-       [:> mui/IconButton {:on-click handle-click}
-        [:> icons/AccountCircle]]
-       [profile-menu @anchor-el handle-close]])))
+  [:> HStack {:spacing 4}
+   [nav-button "Sign Up" "/sign-up"]
+   [nav-button "Sign In" "/sign-in"]])
 
 (defn nav-authenticated
-  [{:keys [current-route]}]
-  [:<>
-   [nav-item {:id            :app.router/campaigns
-              :name          "Campaigns"
-              :href          "/campaigns"
-              :current-route current-route}]
-   [profile-button]])
+  []
+  [:> HStack {:spacing 4}
+   [nav-link "Campaigns" "/campaigns"]
+   [:> Menu
+    [:> MenuButton {:as      Button
+                    :rounded "full"
+                    :variant "link"}
+     [:> Avatar {:size "sm"}]]
+    [:> MenuList
+     [:> MenuItem {:on-click #(rf/dispatch [:navigate :app.router/profile])}
+      "Profile"]
+     [:> MenuItem {:on-click #(rf/dispatch [:log-out])}
+      "Sign Out"]]]])
 
 (defn nav
-  [current-route]
-  [:> mui/AppBar {:position "static"}
-   [:> mui/Toolbar
-    [:> mui/IconButton {:edge "start" :color "inherit"}
-     [:> icons/Menu]]
-    [:> mui/Typography {:variant "h6" :style {:flexGrow 1}}
+  []
+  [:> Box {:bg "gray.900"
+           :px 4
+           :mb 4}
+   [:> Flex {:h               16
+             :align           "center"
+             :justify-content "space-between"}
+    [:> Heading {:size "md"}
      "Grimsward"]
+    [:> Spacer]
     (if @(rf/subscribe [:logged-in?])
-      [nav-authenticated {:current-route current-route}]
-      [nav-public {:current-route current-route}])]])
+      [nav-authenticated]
+      [nav-public])]])
+

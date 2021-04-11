@@ -1,14 +1,14 @@
 (ns app.components.form-group
-  (:require ["@material-ui/core" :as mui]))
+  (:require ["@chakra-ui/react" :refer [FormControl FormErrorMessage FormLabel Input]]))
 
 (defn form-group
-  [{:keys [id label type values error]}]
-  [:> mui/TextField {:id        id
-                     :type      type
-                     :label     label
-                     :error     error
-                     :value     (id @values)
-                     :on-change #(swap! values assoc id (.. % -target -value))
-                     :fullWidth true
-                     :variant   "outlined"
-                     :margin    "normal"}])
+  [{:keys [id label type values placeholder error]}]
+  [:> FormControl {:id         id
+                   :is-invalid error}
+   [:> FormLabel label]
+   [:> Input {:id          id
+              :type        type
+              :value       (id @values)
+              :on-change   #(swap! values assoc id (.. % -target -value))
+              :placeholder placeholder}]
+   [:> FormErrorMessage error]])
