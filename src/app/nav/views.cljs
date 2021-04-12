@@ -1,6 +1,5 @@
 (ns app.nav.views
-  (:require [reagent.core :as r]
-            [re-frame.core :as rf]
+  (:require [re-frame.core :as rf]
             ["@chakra-ui/react" :refer [Avatar Box Button Flex Heading HStack Menu MenuButton MenuItem MenuList Spacer]]))
 
 (defn nav-button
@@ -43,10 +42,12 @@
 
 (defn nav
   []
-  [:> Box {:bg "gray.900"
+  [:> Box {:as "header"
+           :bg "gray.900"
            :px 4
            :mb 4}
-   [:> Flex {:h               16
+   [:> Flex {:as              "nav"
+             :h               16
              :align           "center"
              :justify-content "space-between"}
     [:> Heading {:size "md"}

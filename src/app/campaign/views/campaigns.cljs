@@ -1,18 +1,23 @@
 (ns app.campaign.views.campaigns
   (:require [re-frame.core :as rf]
             [app.campaign.views.campaign-card :refer [campaign-card]]
-            ["@chakra-ui/react" :refer [Button Center Flex Heading Stack]]))
+            ["@chakra-ui/react" :refer [Button Container Heading Stack]]))
 
 (defn campaigns
   []
   (let [campaigns (rf/subscribe [:campaigns])]
-    [:> Flex {:align   "center"
-              :justify "center"}
-     [:> Stack {:spacing 8}
-      [:> Heading {:align "center"}
-       "Campaigns"]
+    [:> Container {:maxW "4xl"}
+     [:> Heading {:text-align  "center"
+                  :size        "xl"
+                  :font-weight "extrabold"}
+      "Campaigns"]
+     [:> Stack {:spacing 6
+                :my      6}
       (for [campaign @campaigns]
         ^{:key (:id campaign)}
         [campaign-card campaign])
-      [:> Button {:full-width true}
+      [:> Button {:type         "submit"
+                  :color-scheme "blue"
+                  :size         "lg"
+                  :font-size    "md"}
        "Create a new campaign"]]]))

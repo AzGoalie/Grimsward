@@ -14,22 +14,23 @@
       [form-container
        "Sign In"
        #(rf/dispatch [:log-in @values])
-       [:> Stack {:spacing 4}
+       [:> Stack {:spacing 6}
         [form-group
-         {:label       "Email Address"
-          :id          :email
-          :type        "email"
-          :error       (when @error "Invalid email/password")
-          :placeholder "eaxmple@grimsward.com"
-          :values      values}]
+         {:label  "Email Address"
+          :id     :email
+          :type   "email"
+          :error  (when @error "Invalid email/password")
+          :values values}]
         [form-group
-         {:label       "Password"
-          :id          :password
-          :type        "password"
-          :placeholder "******"
-          :error       (when @error "Invalid email/password")
-          :values      values}]
-        [:> Button {:type "submit"}
+         {:label  "Password"
+          :id     :password
+          :type   "password"
+          :error  (when @error "Invalid email/password")
+          :values values}]
+        [:> Button {:type         "submit"
+                    :color-scheme "blue"
+                    :size         "lg"
+                    :font-size    "md"}
          "Sign In"]
         [:> Link {:font-size "sm"
                   :href      "/sign-up"}
