@@ -8,14 +8,13 @@
      [:input props])))
 
 (defn form-group
-  [{:keys [id label type values placeholder error]}]
+  [{:keys [id label type values error]}]
   [:> FormControl {:id         id
                    :is-invalid error}
    [:> FormLabel label]
-   [:> Input {:as          r-input
-              :id          id
-              :type        type
-              :value       (id @values)
-              :on-change   #(swap! values assoc id (.. % -target -value))
-              :placeholder placeholder}]
+   [:> Input {:as        r-input
+              :id        id
+              :type      type
+              :value     (id @values)
+              :on-change #(swap! values assoc id (.. % -target -value))}]
    [:> FormErrorMessage error]])

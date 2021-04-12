@@ -36,29 +36,29 @@
       [form-container
        "Profile"
        #(on-update-user email @values)
-       [:> Stack {:spacing 4}
-        [form-group {:label       "Email Address"
-                     :id          :email
-                     :type        "email"
-                     :error       (when (invalid-email? @error)
-                                    (:message @error))
-                     :placeholder "example@grimsward.com"
-                     :values      values}]
-        [form-group {:label       "Password"
-                     :id          :password
-                     :type        "password"
-                     :error       (when (= :weak-password (:code @error))
-                                    (:message @error))
-                     :placeholder "******"
-                     :values      values}]
-        [form-group {:label       "Confirm Password"
-                     :id          :confirm-password
-                     :type        "password"
-                     :error       (when (= :mismatch (:code @error))
-                                    (:message @error))
-                     :placeholder "******"
-                     :values      values}]
-        [:> Button {:type "submit"}
+       [:> Stack {:spacing 6}
+        [form-group {:label  "Email Address"
+                     :id     :email
+                     :type   "email"
+                     :error  (when (invalid-email? @error)
+                               (:message @error))
+                     :values values}]
+        [form-group {:label  "Password"
+                     :id     :password
+                     :type   "password"
+                     :error  (when (= :weak-password (:code @error))
+                               (:message @error))
+                     :values values}]
+        [form-group {:label  "Confirm Password"
+                     :id     :confirm-password
+                     :type   "password"
+                     :error  (when (= :mismatch (:code @error))
+                               (:message @error))
+                     :values values}]
+        [:> Button {:type         "submit"
+                    :color-scheme "blue"
+                    :size         "lg"
+                    :font-size    "md"}
          "Update Account"]]])))
 
 (defn profile []
