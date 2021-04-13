@@ -4,17 +4,18 @@
 
 (defn player-icons
   [players]
-  [:<>
+  [:> Box {:display {:base "none" :md "block"}}
    (for [player players]
      ^{:key player}
-     [:> Tooltip {:label player :aria-label "Player Name"}
+     [:> Tooltip {:label      player
+                  :aria-label "Player Name"}
       [:> Avatar {:size "xs"}]])])
 
 (defn campaign-card
   [{:keys [title description players next-session]}]
   [:> Box {:as            "a"
            :bg            "gray.700"
-           :href          "/somewhere"
+           :href          "#"
            :overflow      "hidden"
            :p             4
            :box-shadow    "md"
