@@ -4,4 +4,4 @@
 (rf/reg-sub
  :campaigns
  (fn [db _]
-   (:campaigns db)))
+   (vals (:campaigns db))))
