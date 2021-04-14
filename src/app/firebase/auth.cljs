@@ -1,6 +1,10 @@
 (ns app.firebase.auth
   (:require [re-frame.core :as rf]
-            ["firebase/app" :default firebase]))
+            [app.firebase.core :refer [firebase-app]]
+            ["firebase/auth" :refer [getAuth onAuthStateChanged createUserWithEmailAndPassword
+                                     signInWithEmailAndPassword signOut updateEmail updatePassword]]))
+
+(defonce auth (getAuth firebase-app))
 
 (defn parse-error-code
   [error]
@@ -26,8 +30,7 @@
  :firebase/sign-in-with-email-and-password
  (fn
    [{:keys [email password on-success on-failure]}]
-   (-> (.auth firebase)
-       (.signInWithEmailAndPassword email password)
+   (-> (signInWithEmailAndPassword auth email password)
        (.then on-success)
        (.catch #(on-failure (parse-error-code (.-code %)))))))
 
@@ -35,8 +38,7 @@
  :firebase/create-user-with-email-and-password
  (fn
    [{:keys [email password on-success on-failure]}]
-   (-> (.auth firebase)
-       (.createUserWithEmailAndPassword email password)
+   (-> (createUserWithEmailAndPassword auth email password)
        (.then on-success)
        (.catch #(on-failure (parse-error-code (.-code %)))))))
 
@@ -44,9 +46,7 @@
  :firebase/update-user-email
  (fn
    [{:keys [email on-success on-failure]}]
-   (-> (.auth firebase)
-       (.-currentUser)
-       (.updateEmail email)
+   (-> (updateEmail (.-currentUser auth) email)
        (.then on-success)
         ;; TODO Implement reauthentication when needed
        (.catch #(on-failure (parse-error-code (.-code %)))))))
@@ -55,9 +55,7 @@
  :firebase/update-user-password
  (fn
    [{:keys [password on-success on-failure]}]
-   (-> (.auth firebase)
-       (.-currentUser)
-       (.updatePassword password)
+   (-> (updatePassword (.-currentUser auth) password)
        (.then on-success)
         ;; TODO Implement reauthentication when needed
        (.catch #(on-failure (parse-error-code (.-code %)))))))
@@ -66,8 +64,7 @@
  :firebase/sign-out
  (fn
    []
-   (-> (.auth firebase)
-       (.signOut))))
+   (signOut auth)))
 
 (defn parse-user
   [user]
@@ -77,12 +74,12 @@
 
 (defn on-auth-state-changed
   []
-  (-> (.auth firebase)
-      (.onAuthStateChanged
-       (fn [user]
-         (if user
-           (rf/dispatch [:set-current-user {:user (parse-user user)}])
-           (rf/dispatch [:remove-current-user])))
-       (fn [error]
-         (when error
-           (rf/dispatch [:log-in-failure (parse-error-code (.-code error))]))))))
+  (onAuthStateChanged
+   auth
+   (fn [user]
+     (if user
+       (rf/dispatch [:set-current-user {:user (parse-user user)}])
+       (rf/dispatch [:remove-current-user])))
+   (fn [error]
+     (when error
+       (rf/dispatch [:log-in-failure (parse-error-code (.-code error))])))))
