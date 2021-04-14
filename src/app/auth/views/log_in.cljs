@@ -9,7 +9,8 @@
   []
   (let [initial-values {:email "" :password ""}
         values (r/atom initial-values)
-        error (rf/subscribe [:log-in-failure])]
+        error (rf/subscribe [:log-in-failure])
+        loading (rf/subscribe [:loading])]
     (fn []
       [form-container
        "Sign In"
@@ -30,7 +31,8 @@
         [:> Button {:type         "submit"
                     :color-scheme "blue"
                     :size         "lg"
-                    :font-size    "md"}
+                    :font-size    "md"
+                    :is-loading   (:log-in @loading)}
          "Sign In"]
         [:> Link {:font-size "sm"
                   :href      "/sign-up"}

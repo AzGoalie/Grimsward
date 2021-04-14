@@ -18,6 +18,11 @@
     ;; -- npm deps --
             ["@chakra-ui/react" :refer [ChakraProvider]]))
 
+(rf/reg-sub
+ :loading
+ (fn [db _]
+   (:loading db)))
+
 (defn app
   []
   (when-let [current-route @(rf/subscribe [:current-route])]

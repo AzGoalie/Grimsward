@@ -25,7 +25,8 @@
                         :password         ""
                         :confirm-password ""}
         values (r/atom initial-values)
-        error (rf/subscribe [:sign-up-failure])]
+        error (rf/subscribe [:sign-up-failure])
+        loading (rf/subscribe [:loading])]
     (fn []
       [form-container
        "Sign Up"
@@ -52,7 +53,8 @@
         [:> Button {:type         "submit"
                     :color-scheme "blue"
                     :size         "lg"
-                    :font-size    "md"}
+                    :font-size    "md"
+                    :is-loading   (:sign-up @loading)}
          "Create Account"]
         [:> Link {:font-size "sm"
                   :href      "/sign-in"}
