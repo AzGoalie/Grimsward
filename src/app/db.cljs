@@ -46,3 +46,8 @@
  :initialize-db
  (fn [_ _]
    initial-app-db))
+
+(rf/reg-sub
+ :loading
+ (fn [db _]
+   (:loading db)))

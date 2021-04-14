@@ -3,10 +3,12 @@
 
 (reg-event-fx
  :log-in
- (fn [{:keys [db]} [_ credentials]]
-   {:db (assoc-in db [:loading :log-in] true)
-    :firebase/sign-in-with-email-and-password
-    (merge credentials {:on-success #(dispatch [:navigate :app.router/campaigns])})}))
+ (fn [{:keys [db]} [_ {:keys [email password]}]]
+   {:db                                       (assoc-in db [:loading :log-in] true)
+    :firebase/sign-in-with-email-and-password {:email      email
+                                               :password   password
+                                               :on-success #(dispatch [:navigate :app.router/campaigns])
+                                               :on-failure #(dispatch [:log-in-failure %])}}))
 
 (reg-event-fx
  :log-out
@@ -16,40 +18,46 @@
 
 (reg-event-fx
  :sign-up
- (fn [{:keys [db]} [_ credentials]]
-   {:db (assoc-in db [:loading :sign-uo] true)
-    :firebase/create-user-with-email-and-password
-    (merge credentials {:on-success #(dispatch [:navigate :app.router/campaigns])})}))
+ (fn [{:keys [db]} [_ {:keys [email password]}]]
+   {:db                                           (assoc-in db [:loading :sign-up] true)
+    :firebase/create-user-with-email-and-password {:email      email
+                                                   :password   password
+                                                   :on-success #(dispatch [:navigate :app.router/campaigns])
+                                                   :on-failure #(dispatch [:sign-up-failure %])}}))
 
 (reg-event-fx
  :update-email
  (fn [{:keys [db]} [_ email]]
-   {:db (assoc-in db [:loading :update-profile] true)
+   {:db         (assoc-in db [:loading :update-profile] true)
     :firebase/update-user-email
-    {:email      email}
-    :on-success #(dispatch [:clear-errors])}))
+    {:email email}
+    :on-success #(dispatch [:clear-errors])
+    :on-failure #(dispatch [:update-user-failure %])}))
 
 (reg-event-fx
  :update-password
  (fn [{:keys [db]} [_ password]]
-   {:db (assoc-in db [:loading :update-profile] true)
+   {:db         (assoc-in db [:loading :update-profile] true)
     :firebase/update-user-password
-    {:password   password}
-    :on-success #(dispatch [:clear-error])}))
+    {:password password}
+    :on-success #(dispatch [:clear-error])
+    :on-failure #(dispatch [:update-user-failure %])}))
 
 (reg-event-db
  :set-current-user
  (fn [db [_ user]]
    (-> db
        (assoc :auth user)
-       (dissoc :errors))))
+       (dissoc :errors)
+       (dissoc :loading))))
 
 (reg-event-db
  :remove-current-user
  (fn [db _]
    (-> db
        (dissoc :auth)
-       (dissoc :errors))))
+       (dissoc :errors)
+       (dissoc :loading))))
 
 (reg-event-db
  :sign-up-failure
