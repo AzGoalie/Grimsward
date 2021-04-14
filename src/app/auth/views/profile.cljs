@@ -31,7 +31,8 @@
                         :password         ""
                         :confirm-password ""}
         values (r/atom initial-values)
-        error (rf/subscribe [:update-user-failure])]
+        error (rf/subscribe [:update-user-failure])
+        loading (rf/subscribe [:loading])]
     (fn []
       [form-container
        "Profile"
@@ -58,7 +59,8 @@
         [:> Button {:type         "submit"
                     :color-scheme "blue"
                     :size         "lg"
-                    :font-size    "md"}
+                    :font-size    "md"
+                    :is-loading   (:update-profile @loading)}
          "Update Account"]]])))
 
 (defn profile []

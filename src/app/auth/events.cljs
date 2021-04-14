@@ -3,8 +3,9 @@
 
 (reg-event-fx
  :log-in
- (fn [_ [_ credentials]]
-   {:firebase/sign-in-with-email-and-password
+ (fn [{:keys [db]} [_ credentials]]
+   {:db (assoc-in db [:loading :log-in] true)
+    :firebase/sign-in-with-email-and-password
     (merge credentials {:on-success #(dispatch [:navigate :app.router/campaigns])})}))
 
 (reg-event-fx
@@ -15,23 +16,26 @@
 
 (reg-event-fx
  :sign-up
- (fn [_ [_ credentials]]
-   {:firebase/create-user-with-email-and-password
+ (fn [{:keys [db]} [_ credentials]]
+   {:db (assoc-in db [:loading :sign-uo] true)
+    :firebase/create-user-with-email-and-password
     (merge credentials {:on-success #(dispatch [:navigate :app.router/campaigns])})}))
 
 (reg-event-fx
  :update-email
- (fn [_ [_ email]]
-   {:firebase/update-user-email
-    {:email      email
-     :on-success #(dispatch [:clear-errors])}}))
+ (fn [{:keys [db]} [_ email]]
+   {:db (assoc-in db [:loading :update-profile] true)
+    :firebase/update-user-email
+    {:email      email}
+    :on-success #(dispatch [:clear-errors])}))
 
 (reg-event-fx
  :update-password
- (fn [_ [_ password]]
-   {:firebase/update-user-password
-    {:password   password
-     :on-success #(dispatch [:clear-error])}}))
+ (fn [{:keys [db]} [_ password]]
+   {:db (assoc-in db [:loading :update-profile] true)
+    :firebase/update-user-password
+    {:password   password}
+    :on-success #(dispatch [:clear-error])}))
 
 (reg-event-db
  :set-current-user
@@ -50,19 +54,27 @@
 (reg-event-db
  :sign-up-failure
  (fn [db [_ error]]
-   (assoc-in db [:errors :sign-up] error)))
+   (-> db
+       (assoc-in [:loading :sign-up] false)
+       (assoc-in [:errors :sign-up] error))))
 
 (reg-event-db
  :log-in-failure
  (fn [db [_ error]]
-   (assoc-in db [:errors :log-in] error)))
+   (-> db
+       (assoc-in [:loading :log-in] false)
+       (assoc-in [:errors :log-in] error))))
 
 (reg-event-db
  :update-user-failure
  (fn [db [_ error]]
-   (assoc-in db [:errors :update-user] error)))
+   (-> db
+       (assoc-in [:loading :update-profile] false)
+       (assoc-in [:errors :update-user] error))))
 
 (reg-event-db
  :clear-errors
  (fn [db _]
-   (dissoc db :errors)))
+   (-> db
+       (dissoc db :errors)
+       (dissoc db :loading))))
