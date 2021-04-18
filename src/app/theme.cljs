@@ -4,5 +4,3 @@
 (def grimsward-theme
   (extendTheme
    (clj->js {:config {:initialColorMode "dark"}})))
-
-

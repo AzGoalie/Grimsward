@@ -4,18 +4,11 @@
             [app.db]
             [app.theme :refer [grimsward-theme]]
             [app.router :as router]
-    ;; -- firebase --
             [app.firebase.init :refer [firebase-init]]
-    ;; -- auth --
             [app.auth.events]
             [app.auth.subs]
-    ;; -- nav --
             [app.nav.views :refer [nav]]
-            [app.nav.events]
-            [app.nav.subs]
-    ;; -- campaigns --
             [app.campaign.subs]
-    ;; -- npm deps --
             ["@chakra-ui/react" :refer [ChakraProvider]]))
 
 (defn app
