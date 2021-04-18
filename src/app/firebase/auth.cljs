@@ -75,10 +75,22 @@
 
 (defn user-info []
   (let [auth-state (r/atom nil)
-        on-change  #(reset! auth-state (user->data %))
+        on-change  (fn [user]
+                     (reset! auth-state (user->data user))
+                     (rf/dispatch [::initialized]))
         on-error   #(js/alert %)]
     (onAuthStateChanged auth on-change on-error)
     auth-state))
+
+(rf/reg-event-db
+ ::initialized
+ (fn [db _]
+   (assoc db ::initialized true)))
+
+(rf/reg-sub
+ ::initialized?
+ (fn [db _]
+   (::initialized db)))
 
 (rf/reg-sub
  ::user

@@ -13,10 +13,11 @@
 
 (defn app
   []
-  (when-let [current-route @(rf/subscribe [:current-route])]
-    [:> ChakraProvider {:theme grimsward-theme}
-     [nav (-> current-route :data :name)]
-     [(-> current-route :data :view)]]))
+  (when @(rf/subscribe [::auth/initialized?])
+    (when-let [current-route @(rf/subscribe [:current-route])]
+      [:> ChakraProvider {:theme grimsward-theme}
+       [nav (-> current-route :data :name)]
+       [(-> current-route :data :view)]])))
 
 (defn ^:dev/after-load start
   []
