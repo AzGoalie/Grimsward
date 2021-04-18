@@ -24,9 +24,9 @@
   (let [initial-values {:email            ""
                         :password         ""
                         :confirm-password ""}
-        values (r/atom initial-values)
-        error (rf/subscribe [:sign-up-failure])
-        loading (rf/subscribe [:loading])]
+        values         (r/atom initial-values)
+        error          (rf/subscribe [:errors/sign-up])
+        loading?       (rf/subscribe [:loading/sign-up])]
     (fn []
       [form-container
        "Sign Up"
@@ -54,7 +54,7 @@
                     :color-scheme "blue"
                     :size         "lg"
                     :font-size    "md"
-                    :is-loading   (:sign-up @loading)}
+                    :is-loading   @loading?}
          "Create Account"]
         [:> Link {:font-size "sm"
                   :href      "/sign-in"}

@@ -2,26 +2,37 @@
   (:require [re-frame.core :refer [reg-sub]]))
 
 (reg-sub
- :logged-in?
- (fn [db _]
-   (:auth db)))
+ :errors/log-in
+ :<- [:errors]
+ (fn [errors]
+   (:log-in errors)))
 
 (reg-sub
- :log-in-failure
- (fn [db _]
-   (get-in db [:errors :log-in])))
+ :errors/sign-up
+ :<- [:errors]
+ (fn [errors]
+   (:sign-up errors)))
 
 (reg-sub
- :sign-up-failure
- (fn [db _]
-   (get-in db [:errors :sign-up])))
+ :errors/update-profile
+ :<- [:errors]
+ (fn [errors]
+   (:update-profile errors)))
 
 (reg-sub
- :update-user-failure
- (fn [db _]
-   (get-in db [:errors :update-user])))
+ :loading/log-in
+ :<- [:loading]
+ (fn [loading]
+   (:log-in loading)))
 
 (reg-sub
- :user
- (fn [db _]
-   (get-in db [:auth :user])))
+ :loading/sign-up
+ :<- [:loading]
+ (fn [loading]
+   (:sign-up loading)))
+
+(reg-sub
+ :loading/update-profile
+ :<- [:loading]
+ (fn [loading]
+   (:update-profile loading)))

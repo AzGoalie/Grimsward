@@ -1,5 +1,6 @@
 (ns app.firebase.auth
-  (:require [re-frame.core :as rf]
+  (:require [reagent.core :as r]
+            [re-frame.core :as rf]
             [app.firebase.core :refer [firebase-app]]
             ["firebase/auth" :refer [getAuth onAuthStateChanged createUserWithEmailAndPassword
                                      signInWithEmailAndPassword signOut updateEmail updatePassword]]))
@@ -27,7 +28,7 @@
                               :message "Too many requests, please wait before trying again."}))
 
 (rf/reg-fx
- :firebase/sign-in-with-email-and-password
+ ::sign-in-with-email-and-password
  (fn
    [{:keys [email password on-success on-failure]}]
    (-> (signInWithEmailAndPassword auth email password)
@@ -35,7 +36,7 @@
        (.catch #(on-failure (parse-error-code (.-code %)))))))
 
 (rf/reg-fx
- :firebase/create-user-with-email-and-password
+ ::create-user-with-email-and-password
  (fn
    [{:keys [email password on-success on-failure]}]
    (-> (createUserWithEmailAndPassword auth email password)
@@ -43,7 +44,7 @@
        (.catch #(on-failure (parse-error-code (.-code %)))))))
 
 (rf/reg-fx
- :firebase/update-user-email
+ ::update-user-email
  (fn
    [{:keys [email on-success on-failure]}]
    (-> (updateEmail (.-currentUser auth) email)
@@ -52,7 +53,7 @@
        (.catch #(on-failure (parse-error-code (.-code %)))))))
 
 (rf/reg-fx
- :firebase/update-user-password
+ ::update-user-password
  (fn
    [{:keys [password on-success on-failure]}]
    (-> (updatePassword (.-currentUser auth) password)
@@ -61,25 +62,41 @@
        (.catch #(on-failure (parse-error-code (.-code %)))))))
 
 (rf/reg-fx
- :firebase/sign-out
+ ::sign-out
  (fn
    []
    (signOut auth)))
 
-(defn parse-user
+(defn user->data
   [user]
-  (js->clj
-   (-> user js/JSON.stringify js/JSON.parse)
-   :keywordize-keys true))
+  (when user
+    {:uid   (.-uid user)
+     :email (.-email user)}))
 
-(defn on-auth-state-changed
-  []
-  (onAuthStateChanged
-   auth
-   (fn [user]
-     (if user
-       (rf/dispatch [:set-current-user {:user (parse-user user)}])
-       (rf/dispatch [:remove-current-user])))
-   (fn [error]
-     (when error
-       (rf/dispatch [:log-in-failure (parse-error-code (.-code error))])))))
+(defn user-info []
+  (let [auth-state (r/atom nil)
+        on-change  #(reset! auth-state (user->data %))
+        on-error   #(js/alert %)]
+    (onAuthStateChanged auth on-change on-error)
+    auth-state))
+
+(rf/reg-sub
+ ::user
+ user-info
+ (fn [user]
+   user))
+
+(rf/reg-sub
+ ::user-uid
+ :<- [::user]
+ (fn [user]
+   (:uid user)))
+
+(rf/reg-sub
+ ::user-email
+ :<- [::user]
+ (fn [user]
+   (:email user)))
+
+(defn init! []
+  (user-info))

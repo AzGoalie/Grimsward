@@ -1,5 +1,6 @@
 (ns app.nav.views
   (:require [re-frame.core :as rf]
+            [app.firebase.auth :as auth]
             ["@chakra-ui/react" :refer [Avatar Box Button Flex Heading HStack Menu MenuButton MenuItem MenuList Spacer]]))
 
 (defn nav-button
@@ -53,7 +54,6 @@
     [:> Heading {:size "md"}
      "Grimsward"]
     [:> Spacer]
-    (if @(rf/subscribe [:logged-in?])
+    (if @(rf/subscribe [::auth/user-uid])
       [nav-authenticated]
       [nav-public])]])
-

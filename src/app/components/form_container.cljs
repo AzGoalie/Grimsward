@@ -1,6 +1,5 @@
 (ns app.components.form-container
-  (:require [app.components.form-group :refer [form-group]]
-            ["@chakra-ui/react" :refer [Box Container Heading]]))
+  (:require ["@chakra-ui/react" :refer [Box Container Heading]]))
 
 (defn form-container
   [heading on-submit form]

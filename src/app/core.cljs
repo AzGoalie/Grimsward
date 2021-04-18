@@ -4,7 +4,7 @@
             [app.db]
             [app.theme :refer [grimsward-theme]]
             [app.router :as router]
-            [app.firebase.init :refer [firebase-init]]
+            [app.firebase.auth :as auth]
             [app.auth.events]
             [app.auth.subs]
             [app.nav.views :refer [nav]]
@@ -28,5 +28,5 @@
   []
   (rf/dispatch-sync [:initialize-db])
   (router/init-routes!)
-  (firebase-init)
+  (auth/init!)
   (start))
