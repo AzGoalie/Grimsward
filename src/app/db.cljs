@@ -6,8 +6,11 @@
   []
   (cljs-time/plus (cljs-time/now) (cljs-time/days (rand-int 30))))
 
-(def initial-app-db {:auth          {}
+(def initial-app-db {:auth          {:uid          nil
+                                     :email        nil
+                                     :initialized? false}
                      :errors        {}
+                     :loading       {}
                      :current-route nil
                      :campaigns     {:21f1e04a-a18d-469f-a29e-52c106c3bc5f {:id           "21f1e04a-a18d-469f-a29e-52c106c3bc5f"
                                                                             :title        "An Awoo Adventure"

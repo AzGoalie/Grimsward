@@ -1,6 +1,5 @@
 (ns app.firebase.auth
-  (:require [reagent.core :as r]
-            [re-frame.core :as rf]
+  (:require [re-frame.core :as rf]
             [app.firebase.core :refer [firebase-app]]
             ["firebase/auth" :refer [getAuth onAuthStateChanged createUserWithEmailAndPassword
                                      signInWithEmailAndPassword signOut updateEmail updatePassword]]))
@@ -67,47 +66,44 @@
    []
    (signOut auth)))
 
+(rf/reg-event-db
+ ::initialized
+ (fn [db [_ user]]
+   (-> db
+       (assoc :auth user)
+       (assoc-in [:auth :initialized?] true))))
+
+(rf/reg-sub
+ ::auth
+ (fn [db _]
+   (:auth db)))
+
+(rf/reg-sub
+ ::initialized?
+ :<- [::auth]
+ (fn [auth]
+   (:initialized? auth)))
+
+(rf/reg-sub
+ ::user-uid
+ :<- [::auth]
+ (fn [auth]
+   (:uid auth)))
+
+(rf/reg-sub
+ ::user-email
+ :<- [::auth]
+ (fn [auth]
+   (:email auth)))
+
 (defn user->data
   [user]
   (when user
     {:uid   (.-uid user)
      :email (.-email user)}))
 
-(defonce user-info
-  (let [auth-state (r/atom nil)
-        on-change  (fn [user]
-                     (reset! auth-state (user->data user))
-                     (rf/dispatch [::initialized]))
-        on-error   #(js/alert %)]
-    (onAuthStateChanged auth on-change on-error)
-    auth-state))
-
-(rf/reg-event-db
- ::initialized
- (fn [db _]
-   (assoc db ::initialized true)))
-
-(rf/reg-sub
- ::initialized?
- (fn [db _]
-   (::initialized db)))
-
-(rf/reg-sub
- ::user
- (fn [_ _]
-   @user-info))
-
-(rf/reg-sub
- ::user-uid
- :<- [::user]
- (fn [user]
-   (:uid user)))
-
-(rf/reg-sub
- ::user-email
- :<- [::user]
- (fn [user]
-   (:email user)))
-
 (defn init! []
-  user-info)
+  (let [on-change (fn [user]
+                    (rf/dispatch [::initialized (user->data user)]))
+        on-error  #(rf/dispatch [::error %])]
+    (onAuthStateChanged auth on-change on-error)))
