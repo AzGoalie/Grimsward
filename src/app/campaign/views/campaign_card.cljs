@@ -1,10 +1,10 @@
 (ns app.campaign.views.campaign-card
-  (:require [cljs-time.format :refer [unparse formatters]]
-            ["@chakra-ui/react" :refer [Avatar Box Flex Heading Spacer Text Tooltip]]))
+  (:require ["@chakra-ui/react" :refer [Avatar Box Flex Heading Spacer Text Tooltip]]))
 
 (defn player-icons
   [players]
-  [:> Box {:display {:base "none" :md "block"}}
+  [:> Box {:display {:base "none"
+                     :md   "block"}}
    (for [player players]
      ^{:key player}
      [:> Tooltip {:label      player
@@ -29,4 +29,6 @@
     description]
    [:> Text {:font-size "sm"
              :color     "gray.400"}
-    (str "Next Session: " (unparse (formatters :date) next-session))]])
+    (str "Next Session: " (if next-session
+                            (.toDate ^js next-session)
+                            "Not Scheduled"))]])
