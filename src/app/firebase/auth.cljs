@@ -73,7 +73,7 @@
     {:uid   (.-uid user)
      :email (.-email user)}))
 
-(defn user-info []
+(defonce user-info
   (let [auth-state (r/atom nil)
         on-change  (fn [user]
                      (reset! auth-state (user->data user))
@@ -94,9 +94,8 @@
 
 (rf/reg-sub
  ::user
- user-info
- (fn [user]
-   user))
+ (fn [_ _]
+   @user-info))
 
 (rf/reg-sub
  ::user-uid
@@ -111,4 +110,4 @@
    (:email user)))
 
 (defn init! []
-  (user-info))
+  user-info)
