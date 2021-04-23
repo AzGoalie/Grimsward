@@ -2,7 +2,8 @@
   (:require [re-frame.core :as rf]
             [app.campaign.events :as events]
             [app.campaign.views.campaign-card :refer [campaign-card]]
-            ["@chakra-ui/react" :refer [Button Container Heading Stack]]))
+            [app.campaign.views.new-campaign-modal :refer [new-campaign-modal]]
+            ["@chakra-ui/react" :refer [Container Heading Stack]]))
 
 (defn campaigns
   []
@@ -21,8 +22,4 @@
         (for [campaign campaigns]
           ^{:key (:id campaign)}
           [campaign-card campaign])
-        [:> Button {:type         "submit"
-                    :color-scheme "blue"
-                    :size         "lg"
-                    :font-size    "md"}
-         "Create a new campaign"]]])))
+        [new-campaign-modal]]])))

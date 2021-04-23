@@ -19,3 +19,8 @@
                        :where           {:field "players"
                                          :op    "array-contains"
                                          :val   (get-in db [:auth :uid])}}}))
+
+(rf/reg-event-fx
+ ::create-campaign
+ (fn [_ [_ {:keys [title description players]}]]
+   (println title description players)))
