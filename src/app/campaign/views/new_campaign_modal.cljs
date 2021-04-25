@@ -57,7 +57,7 @@
 
 (defn new-campaign-modal
   []
-  (let [open?          (r/atom true)
+  (let [open?          (r/atom false)
         initial-values {:title       ""
                         :description ""
                         :players     #{}}
