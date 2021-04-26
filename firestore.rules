@@ -9,11 +9,11 @@ service cloud.firestore {
       }
       
       function isOwner(rsc) {
-      	return rsc.data.owner == request.auth.uid;
+      	return rsc.data.owner == request.auth.token.email;
       }
       
       function isPlayer(rsc) {
-      	return request.auth.uid in rsc.data.players;
+      	return request.auth.token.email in rsc.data.players;
       }
       
     	function isValidNewCampaign() {

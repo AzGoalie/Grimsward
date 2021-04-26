@@ -36,6 +36,7 @@
                    :on-change   on-change}]
         [:> InputRightElement {:width "6.5rem"}
          [:> Button {:on-click on-submit
+                     :type     "submit"
                      :size     "sm"
                      :height   "1.75rem"}
           "Add player"]]]])))
@@ -77,7 +78,9 @@
                :footer   [:<>
                           [:> Button {:color-scheme "blue"
                                       :mr           4
-                                      :on-click     #(rf/dispatch [::events/create-campaign @values])}
+                                      :on-click     (fn [_]
+                                                      (rf/dispatch [::events/create-campaign @values])
+                                                      (reset! open? false))}
                            "Create"]
                           [:> Button {:on-click #(reset! open? false)}
                            "Cancel"]]}]])))

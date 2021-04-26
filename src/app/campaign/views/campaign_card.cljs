@@ -9,10 +9,11 @@
      ^{:key player}
      [:> Tooltip {:label      player
                   :aria-label "Player Name"}
-      [:> Avatar {:size "xs"}]])])
+      [:> Avatar {:size "xs"
+                  :mx   1}]])])
 
 (defn campaign-card
-  [{:keys [title description players next-session]}]
+  [{:keys [title description owner players next-session]}]
   [:> Box {:as            "a"
            :bg            "gray.700"
            :href          "#"
@@ -24,7 +25,7 @@
     [:> Heading {:size "md"}
      title]
     [:> Spacer]
-    [player-icons players]]
+    [player-icons (conj players owner)]]
    [:> Text
     description]
    [:> Text {:font-size "sm"

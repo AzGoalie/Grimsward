@@ -4,6 +4,14 @@
 (defonce ^js db (.firestore js/firebase))
 
 (rf/reg-fx
+ ::create
+ (fn [{:keys [collection-name document]}]
+   (-> db
+       (.collection collection-name)
+       (.add (clj->js document))
+       (.catch #(rf/dispatch [::error collection-name %])))))
+
+(rf/reg-fx
  ::query
  (fn [{:keys [collection-name db-path] {:keys [field op val]} :where}]
    (-> db
