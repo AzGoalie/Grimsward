@@ -6,11 +6,11 @@
     "analyze": "shadow-cljs run shadow.cljs.build-report app report.html",
     "fmt:check": "clojure -Sdeps '{:deps {cljfmt/cljfmt {:mvn/version \"0.7.0\"}}}' -M -m cljfmt.main check",
     "fmt:fmt": "clojure -Sdeps '{:deps {cljfmt/cljfmt {:mvn/version \"0.7.0\"}}}' -M -m cljfmt.main fix",
+    "emulators": "firebase emulators:start --import=test-data",
     "dev": "shadow-cljs watch app",
     "release": "shadow-cljs release app",
     "server": "shadow-cljs server",
-    "clean": "rm -rf target && rm -rf public/js",
-    "clean-win": "Remove-Item -Path public/js -Recurse; Remove-Item  -Path target -Recurse"
+    "clean": "rimraf public/js .shadow-cljs"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.9",
@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "firebase-tools": "^9.10.0",
+    "rimraf": "^2.7.1",
     "shadow-cljs": "^2.12.1"
   }
 }
