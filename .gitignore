@@ -8,3 +8,8 @@
 /.lsp/
 /.calva/
 .nrepl-port
+.firebase
+ui-debug.log
+firebase-debug.log
+firestore-debug.log
+report.html

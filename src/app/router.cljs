@@ -2,7 +2,6 @@
   (:require [reitit.frontend :as reitit]
             [reitit.frontend.easy :as rfe]
             [reitit.frontend.controllers :as rfc]
-            [reitit.coercion.malli :as malli]
             [re-frame.core :as rf]
             [app.auth.views.log-in :refer [log-in]]
             [app.auth.views.sign-up :refer [sign-up]]
@@ -60,8 +59,7 @@
 
 (def router
   (reitit/router
-   routes
-   {:data {:coercion malli/coercion}}))
+   routes))
 
 (defn init-routes! []
   (js/console.log "initializing routes")

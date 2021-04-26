@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+
+  match /databases/{database}/documents {
+    match /campaigns/{campaign} {
+    
+   		function isSignedIn() {
+      	return request.auth != null;
+      }
+      
+      function isOwner(rsc) {
+      	return rsc.data.owner == request.auth.uid;
+      }
+      
+      function isPlayer(rsc) {
+      	return request.auth.uid in rsc.data.players;
+      }
+      
+    	function isValidNewCampaign() {
+        return resource == null && isOwner(request.resource);
+      }
+    
+    	allow write: if isSignedIn() && (isValidNewCampaign() || isOwner(resource));
+      allow read: if isSignedIn() && (isPlayer(resource) || isOwner(resource));
+    }
+  }
+}

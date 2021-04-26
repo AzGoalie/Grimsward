@@ -1,28 +1,25 @@
 (ns app.firebase.firestore
-  (:require [re-frame.core :as rf]
-            [app.firebase.core :refer [firebase-app]]
-            ["firebase/firestore" :refer [getFirestore collection onSnapshot query where]]))
+  (:require [re-frame.core :as rf]))
 
-(defonce db (getFirestore firebase-app))
+(defonce ^js db (.firestore js/firebase))
 
 (rf/reg-fx
  ::query
  (fn [{:keys [collection-name db-path] {:keys [field op val]} :where}]
-   (let [coll (collection db collection-name)
-         q (query coll (where field op val))
-         on-change #(rf/dispatch [::update db-path %])
-         on-error #(rf/dispatch [::error db-path %])]
-     (onSnapshot q on-change on-error))))
+   (-> db
+       (.collection collection-name)
+       (.where field op val)
+       (.onSnapshot #(rf/dispatch [::update db-path %]) #(rf/dispatch [::error db-path %])))))
 
 (defn transform-doc
-  [doc]
+  [^js doc]
   (let [id   (keyword (.-id doc))
         data (js->clj (.data doc) :keywordize-keys true)]
     [id (assoc data :id id)]))
 
 (rf/reg-event-db
  ::update
- (fn [db [_ db-path querySnapshot]]
+ (fn [db [_ db-path ^js querySnapshot]]
    (let [values (->> (.-docs querySnapshot)
                      (map transform-doc)
                      (into {}))]
@@ -32,6 +29,7 @@
 
 (rf/reg-event-db
  ::error
- (fn [db [_ db-path error]]
+ (fn [db [_ db-path ^js error]]
+   (js/console.error error)
    (assoc-in db [:errors :firestore db-path] {:code    (.-code error)
                                               :message (.-message error)})))

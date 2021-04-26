@@ -1,10 +1,7 @@
 (ns app.firebase.auth
-  (:require [re-frame.core :as rf]
-            [app.firebase.core :refer [firebase-app]]
-            ["firebase/auth" :refer [getAuth onAuthStateChanged createUserWithEmailAndPassword
-                                     signInWithEmailAndPassword signOut updateEmail updatePassword]]))
+  (:require [re-frame.core :as rf]))
 
-(defonce auth (getAuth firebase-app))
+(defonce ^js auth (.auth js/firebase))
 
 (defn parse-error-code
   [error]
@@ -30,7 +27,7 @@
  ::sign-in-with-email-and-password
  (fn
    [{:keys [email password on-success on-failure]}]
-   (-> (signInWithEmailAndPassword auth email password)
+   (-> (.signInWithEmailAndPassword auth email password)
        (.then on-success)
        (.catch #(on-failure (parse-error-code (.-code %)))))))
 
@@ -38,7 +35,7 @@
  ::create-user-with-email-and-password
  (fn
    [{:keys [email password on-success on-failure]}]
-   (-> (createUserWithEmailAndPassword auth email password)
+   (-> (.createUserWithEmailAndPassword auth email password)
        (.then on-success)
        (.catch #(on-failure (parse-error-code (.-code %)))))))
 
@@ -46,7 +43,7 @@
  ::update-user-email
  (fn
    [{:keys [email on-success on-failure]}]
-   (-> (updateEmail (.-currentUser auth) email)
+   (-> (.updateEmail (.-currentUser auth) email)
        (.then on-success)
         ;; TODO Implement reauthentication when needed
        (.catch #(on-failure (parse-error-code (.-code %)))))))
@@ -55,7 +52,7 @@
  ::update-user-password
  (fn
    [{:keys [password on-success on-failure]}]
-   (-> (updatePassword (.-currentUser auth) password)
+   (-> (.updatePassword (.-currentUser auth) password)
        (.then on-success)
         ;; TODO Implement reauthentication when needed
        (.catch #(on-failure (parse-error-code (.-code %)))))))
@@ -64,7 +61,7 @@
  ::sign-out
  (fn
    []
-   (signOut auth)))
+   (.signOut auth)))
 
 (rf/reg-event-db
  ::initialized
@@ -106,4 +103,4 @@
   (let [on-change (fn [user]
                     (rf/dispatch [::initialized (user->data user)]))
         on-error  #(rf/dispatch [::error %])]
-    (onAuthStateChanged auth on-change on-error)))
+    (.onAuthStateChanged auth on-change on-error)))
