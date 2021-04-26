@@ -1,7 +1,7 @@
 (ns app.nav.views
   (:require [re-frame.core :as rf]
             [app.firebase.auth :as auth]
-            ["@chakra-ui/react" :refer [Avatar Box Button Flex Heading HStack Menu MenuButton MenuItem MenuList Spacer]]))
+            ["@chakra-ui/react" :refer [Avatar Box Button Flex Heading HStack Menu MenuButton MenuItem MenuList Portal Spacer]]))
 
 (defn nav-button
   [label href]
@@ -35,11 +35,12 @@
                     :rounded "full"
                     :variant "link"}
      [:> Avatar {:size "sm"}]]
-    [:> MenuList
-     [:> MenuItem {:on-click #(rf/dispatch [:navigate :app.router/profile])}
-      "Profile"]
-     [:> MenuItem {:on-click #(rf/dispatch [:log-out])}
-      "Sign Out"]]]])
+    [:> Portal
+     [:> MenuList
+      [:> MenuItem {:on-click #(rf/dispatch [:navigate :app.router/profile])}
+       "Profile"]
+      [:> MenuItem {:on-click #(rf/dispatch [:log-out])}
+       "Sign Out"]]]]])
 
 (defn nav
   []
