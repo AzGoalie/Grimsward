@@ -13,10 +13,10 @@
                   :mx   1}]])])
 
 (defn campaign-card
-  [{:keys [title description owner players next-session]}]
+  [{:keys [id title description owner players next-session]}]
   [:> Box {:as            "a"
            :bg            "gray.700"
-           :href          "#"
+           :href          (str "/campaigns/" (name id))
            :overflow      "hidden"
            :p             4
            :box-shadow    "md"

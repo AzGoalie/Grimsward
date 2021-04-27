@@ -17,7 +17,7 @@
     (when-let [current-route @(rf/subscribe [:current-route])]
       [:> ChakraProvider {:theme grimsward-theme}
        [nav (-> current-route :data :name)]
-       [(-> current-route :data :view)]])))
+       [(-> current-route :data :view) current-route]])))
 
 (defn ^:dev/after-load start
   []

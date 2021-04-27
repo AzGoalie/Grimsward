@@ -21,9 +21,9 @@
 
 (defn transform-doc
   [^js doc]
-  (let [id   (keyword (.-id doc))
+  (let [id   (.-id doc)
         data (js->clj (.data doc) :keywordize-keys true)]
-    [id (assoc data :id id)]))
+    [(keyword id) (assoc data :id id)]))
 
 (rf/reg-event-db
  ::update

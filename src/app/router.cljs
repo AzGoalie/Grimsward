@@ -2,11 +2,13 @@
   (:require [reitit.frontend :as reitit]
             [reitit.frontend.easy :as rfe]
             [reitit.frontend.controllers :as rfc]
+            [reitit.coercion.spec :as rss]
             [re-frame.core :as rf]
             [app.auth.views.log-in :refer [log-in]]
             [app.auth.views.sign-up :refer [sign-up]]
             [app.auth.views.profile :refer [profile]]
             [app.campaign.views.campaigns :refer [campaigns]]
+            [app.campaign.views.campaign :refer [campaign]]
             ["@chakra-ui/react" :refer [Heading]]))
 
 (rf/reg-event-db
@@ -54,12 +56,18 @@
     {:name ::profile
      :view #'profile}]
    ["campaigns"
+    [""
     {:name ::campaigns
-     :view #'campaigns}]])
+     :view #'campaigns}] 
+    ["/:id"
+     {:name ::campaign
+      :view #'campaign
+       :parameters {:path  {:id string?}}}]]])
 
 (def router
   (reitit/router
-   routes))
+   routes
+   {:data {:coercion rss/coercion}}))
 
 (defn init-routes! []
   (js/console.log "initializing routes")
