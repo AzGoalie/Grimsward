@@ -65,5 +65,5 @@
          "Update Account"]]])))
 
 (defn profile []
-  (if-let [email @(rf/subscribe [::auth/user-email])]
+  (when-let [email @(rf/subscribe [::auth/user-email])]
     [profile-form email]))
